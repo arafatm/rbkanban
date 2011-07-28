@@ -1,6 +1,6 @@
 require 'rubygems'     
-require 'sinatra'         
 require 'json'         
+require 'mongo_mapper'
 
 MongoMapper.connection = Mongo::Connection.new('localhost')
 MongoMapper.database = 'kanban'
@@ -8,15 +8,17 @@ MongoMapper.database = 'kanban'
 class Feature 
   include MongoMapper::Document
   key :title, String
+  key :status, String
+  key :state, String
+
+  many :comments
 end
 
-get '/' do        
-  content_type :json
-  Feature.all.to_json
+class Comment
+  include MongoMapper::Document
+  key :comment, String
+  key :createdon, DateTime
+
+  belongs_to :feature
 end
 
-get '/add' do
-  feature = Feature.new
-  feature.title = 'Feature ' + rand
-  feature.save
-end
