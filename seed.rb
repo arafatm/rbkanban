@@ -16,7 +16,8 @@ states = ["Ready", "Progress", "Impeded"]
                   :status => statuses[rand(statuses.size)],
                   :state => states[rand(states.size)])
   5.times do |j|
-    f.comments << { Time.now.to_s => "comment #{j}" }
+    f.comments << Comment.new(:comment => "Comment #{j}",
+                              :createdon => Time.now).to_mongo
   end
   f.save
 end
