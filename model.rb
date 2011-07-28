@@ -18,6 +18,6 @@ end
 class Comment
   include MongoMapper::Document
   key :comment, String
-  key :createdon, DateTime
+  key :createdon, Time
 end
 
