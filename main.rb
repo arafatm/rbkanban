@@ -15,6 +15,9 @@ get '/' do
   Feature.all.to_json
 end
 
+get '/:id' do
+end
+
 get '/add' do
   feature = Feature.new
   feature.title = 'Feature ' + rand

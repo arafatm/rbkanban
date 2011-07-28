@@ -15,11 +15,10 @@ states = ["Ready", "Progress", "Impeded"]
   f = Feature.new(:title => "Feature #{i}",
                   :status => statuses[rand(statuses.size)],
                   :state => states[rand(states.size)])
-  f.save
   5.times do |j|
     c = Comment.new(:comment => "Comment #{j}",
                     :createdon => DateTime.now - (rand(5)))
-    c.feature = f
-    c.save
+    f.comments << c.to_mongo
   end
+  f.save
 end

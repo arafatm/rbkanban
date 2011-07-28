@@ -11,14 +11,13 @@ class Feature
   key :status, String
   key :state, String
 
-  many :comments
+  key :comments, Array
+  
 end
 
 class Comment
   include MongoMapper::Document
   key :comment, String
   key :createdon, DateTime
-
-  belongs_to :feature
 end
 
