@@ -1,0 +1,135 @@
+<html>
+<head>
+<link type="text/css" href="css/smoothness/jquery-ui-1.8.14.custom.css" rel="Stylesheet" />
+<script src="js/jquery-1.6.1.min.js" type="text/javascript"></script>
+<script src="js/jquery.tmpl.js" type="text/javascript"></script>
+<script src="js/knockout-1.2.1.js" type="text/javascript"></script>
+<script type="text/javascript" src="js/jquery-ui-1.8.14.custom.min.js"></script>
+</head>
+<body>
+<table>
+  <tr>
+    <th>Id</th>
+    <th>Name</th>
+    <th></th>
+    <th></th>
+  </tr>
+  <tbody data-bind="template: { name: 'productsTmpl', foreach: productList }"></tbody>
+</table>
+<button data-bind="click: addProduct">Add Product</button>
+
+<script id="productsTmpl" type="text/html">
+<tr>
+        <td data-bind="text: id"></td>
+        <td data-bind="text: name"></td> 
+        <td>
+            <button data-bind="click: function() { viewModel.editProduct($data) }">Edit</button>
+        </td>
+        <td>
+            <button data-bind="click: function() { viewModel.removeProduct($data) }">Delete</button>
+        </td>
+    </tr>
+</script>
+
+<hr />
+
+<div id="details" data-bind="template: { name: 'editTmpl', data: selectedProduct }, openDialog: selectedProduct"> 
+</div>
+
+<script id="editTmpl" type="text/html">
+<p>
+        <label>ID: </label>
+        <input data-bind="value: editId"  />
+    </p>
+    <p>
+        <label>Name: </label>
+        <input data-bind="value: editName"  />
+    </p>        
+</script>
+<script>
+$(function() {
+    //set up dialog
+    $("#details").dialog({
+autoOpen: false,
+resizable: true,
+modal: true,
+buttons: {
+"Accept": function() {
+viewModel.accept();
+$(this).dialog("close");
+},
+Cancel: function() {
+viewModel.cancel();
+$(this).dialog("close");
+}
+}
+});
+    });
+
+function Product(id, name, isNew) {
+  this.id = ko.observable(id);
+  this.name = ko.observable(name);
+  this.isNew = isNew;
+  this.editId = ko.observable(id);
+  this.editName = ko.observable(name);
+
+  //persist edits to real values on accept
+  this.accept = function() {
+    this.id(this.editId()).name(this.editName());
+  }.bind(this);
+
+  //reset to originals on cancel
+  this.cancel = function() {
+    this.editId(this.id()).editName(this.name());
+  }.bind(this);
+}
+
+var viewModel = {
+productList: ko.observableArray(
+                 [
+                 new Product(1, "one"),
+                 new Product(2, "two"),
+                 new Product(3, "three"),
+                 new Product(4, "four")
+                 ]),
+             selectedProduct: ko.observable(),
+             editProduct: function(productToEdit) {
+               viewModel.selectedProduct(productToEdit);
+               //$("#details").dialog("open");  //let's put this in a custom binding handler called "openDialog"
+             },
+addProduct: function() {
+              viewModel.selectedProduct(new Product(0, "", true));
+            },
+removeProduct: function(product) {
+                 viewModel.productList.remove(product);   
+               },
+accept: function() {
+          var selected = viewModel.selectedProduct();
+          selected.accept();
+
+          if (selected.isNew) {
+            viewModel.productList.push(new Product(selected.id(), selected.name()));   
+          }
+
+          viewModel.selectedProduct("");
+        },
+cancel: function() {
+          viewModel.selectedProduct().cancel();
+          viewModel.selectedProduct("");
+        }
+};
+
+//custom binding handler that opens the jQuery dialog, if the selectedProduct is populated
+ko.bindingHandlers.openDialog = {
+update: function(element, valueAccessor) {
+          var value = ko.utils.unwrapObservable(valueAccessor());
+          if (value) {
+            $(element).dialog("open");
+          }
+        }
+}
+
+ko.applyBindings(viewModel);
+</script>
+</body>
+</html>

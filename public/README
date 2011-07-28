@@ -1,0 +1,29 @@
+# Description
+
+A simple kanban board while I learn knockout.js
+
+# Usage
+
+Open board.html
+
+#TODO
+
+- data.json file
+- ajax updates
+- modal dialog CRUD
+- ajax off data.json to load data
+
+-- Add State['Ready', 'In Progress', 'Impeded']
+
+## server side
+
+- sinatra app w/ json crud
+
+# Notes
+
+- http://www.agileproductdesign.com/blog/2009/kanban_over_simplified.html
+- Cumulative Flow Diagram -- Kanban p.26
+
+# License
+
+Do whatever the fuck you want

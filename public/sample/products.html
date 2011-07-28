@@ -1,0 +1,122 @@
+<html>
+<head>
+<script src="js/jquery-1.6.1.min.js" type="text/javascript"></script>
+<script src="js/jquery.tmpl.js" type="text/javascript"></script>
+<script src="js/knockout-1.2.1.js" type="text/javascript"></script>
+</head>
+<body>
+<table>
+    <tr>
+        <th>Product</th>
+        <th>Price</th>
+        <th>Quantity</th>
+        <th>Total</th>
+        <th></th>
+    </tr>
+    <tbody data-bind="template: { name: 'itemsTmpl', foreach: items }"></tbody>
+</table>
+<a href="javascript: void(0);" data-bind="click: addItem">Add Item</a>
+<script id="itemsTmpl" type="text/html">
+    <tr>
+        <td>
+            <select data-bind="options: viewModel.productCatalog, optionsText: 'name', optionsValue: 'id', value: productId"></select>
+        </td>
+        <td>
+            <input size="4" data-bind="value: editPrice" />
+        </td>
+        <td>
+            <input size="3" data-bind="value: quantity" />
+        </td>
+        <td data-bind="fadeInText: total">   
+        </td>
+        <td>
+            <a href="javascript: void(0);" data-bind="click: function() { viewModel.removeItem($data) }"> Remove </a>
+        </td>
+    </tr>
+</script>
+
+<script type="text/javascript">
+function Item(id, price, quantity, productId) {
+    this.id = id;
+    this.price = ko.observable(price);
+    this.quantity = ko.observable(quantity);
+    this.productId = ko.observable(productId);
+
+    //dependentObservable to display total (not internationalized)
+    this.total = ko.dependentObservable(function() {
+        return viewModel.formatCurrency(this.quantity() * this.price());
+    }, this);
+
+    //writable dependentObservable to parse currency input 
+    this.editPrice = ko.dependentObservable({
+        //return a formatted price
+        read: function() {
+            return viewModel.formatCurrency(this.price());
+        },
+        //if the value changes, make sure that we store a number back to price
+        write: function(newValue) {
+            this.price(viewModel.parseCurrency(newValue));
+        },
+        owner: this
+    });
+
+    //manual subscription to default in the wholesale price whenever the product changes (technically we could do this in the write function of the writeable dependentObservable, but better to keep it focused on reading/writing the single field).
+    this.productId.subscribe(function(newProductId) {
+        var newProduct = ko.utils.arrayFirst(viewModel.productCatalog, function(product) {
+            return product.id == newProductId;
+        });
+        this.price(newProduct.wholesale);
+    }.bind(this));
+}
+
+var viewModel = {
+    items: ko.observableArray([]),
+    productCatalog: [
+        {
+        id: 1,
+        name: "Pencil",
+        wholesale: 1},
+    {
+        id: 2,
+        name: "Pen",
+        wholesale: 1},
+    {
+        id: 3,
+        name: "Ruler",
+        wholesale: 4},
+    {
+        id: 4,
+        name: "Eraser",
+        wholesale: 2}
+    ],
+    addItem: function() {
+        this.items.push(new Item(0, 1, 1, 1));
+    },
+    removeItem: function(itemToRemove) {
+        this.items.remove(itemToRemove);
+    },
+    //not internationalized, for sample purposes
+    formatCurrency: function(value) {
+        return "$" + value.toFixed(2)
+    },
+    //not internationalizedm, for sample purposes
+    parseCurrency: function(value) {
+        var num = parseFloat(value.replace(/[^\d.]+/g, ""))
+        return isNaN(num) ? 0 : num;
+    }
+};
+
+viewModel.items.push(new Item(1, 4, 5, 1));
+
+ko.bindingHandlers['fadeInText'] = {
+    'update': function(element, valueAccessor) {
+        $(element).hide();
+        ko.bindingHandlers.text.update(element, valueAccessor);
+        $(element).fadeIn('slow');
+    }
+};
+
+ko.applyBindings(viewModel);
+</script>
+</body>
+</html>

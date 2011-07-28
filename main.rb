@@ -10,6 +10,5 @@ class Feature
 end
 
 get '/' do        
-  content_type :json
   Feature.all.to_json
 end

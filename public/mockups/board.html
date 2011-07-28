@@ -1,0 +1,61 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="../css/reset.css" />
+<style>
+div.feature { width: 12em; font-size: .9em; }
+table {margin: 1ex; }
+td { border: 0px solid black; border-width: 1px 0px ; margin: 0; padding: 1ex; }
+tr.boardHead { border-bottom: 1px solid black;}
+td.done { background-color: #F66; }
+</style>
+</head>
+<body>
+<table >
+  <tr class="boardHead">
+    <td class="backlog"><div class="feature"></div></td>
+    <td class="ready"><div class="feature">Ready</div></td>
+    <td class="progress"><div class="feature">Progress</div></td>
+    <td class="verify"><div class="feature">Verify</div></td>
+    <td class="done"><div class="feature">Done</div></td>
+  </tr>
+  <tr id="MMF1">
+    <td class="backlog"></td>
+    <td class="ready"></td>
+    <td class="progress">
+      <div class="feature">
+        <div class="featureHead">MMF1 Description</div>
+        <div class="estimate">Estimate: 5</div>
+        <div class="businessValue">Value: 50</div>
+        <div class="description">Lorem Ipsum</div>
+      </div>
+    </td>
+    <td class="verify"></td>
+    <td class="done"></td>
+  </tr>
+  <tr id="MMF2">
+    <td class="backlog"></td>
+    <td class="ready">
+      <div class="feature">
+        <div class="featureHead">MMF2 Description</div>
+        <div class="estimate">Estimate: 3</div>
+        <div class="businessValue">Value: 20</div>
+        <div class="description">
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
+          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
+          ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+          aliquip ex ea commodo consequat. Duis aute irure dolor in
+          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+          culpa qui officia deserunt mollit anim id est laborum.
+        </div>
+      </div>
+    </td>
+    <td class="progress"></td>
+    <td class="verify"></td>
+    <td class="done"></td>
+  </tr>
+  <tr>
+  </tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,66 @@
+em {
+  font-weight: 900;
+}
+div {
+  font-family: Arial;
+  font-size: 14px;
+ }
+
+ h2 {
+   font-size: 120%;
+   border-bottom: 1px solid black;
+   margin-bottom: 1em;
+   text-align: center;
+ }
+ table {
+   border-collapse: collapse;
+   width: 100%;
+   margin: 0em;
+ }
+ table td {
+   margin: 0;
+   padding: 10px;
+   border: 1px solid black;
+   width: 20%;
+ }
+ div.Impeded {
+   background-color: #F00;
+   border: 1px solid black;
+   margin: 1em 0;
+   padding: 5px;
+ }
+ div.Progress {
+   background-color: #0F0;
+   border: 1px solid black;
+   margin: 1em 0;
+   padding: 5px;
+ }
+ div.Ready {
+   background-color: #FFF8D7;
+   border: 1px solid black;
+   margin: 1em 0;
+   padding: 5px;
+ }
+ div.feature {
+   border: 1px solid black;
+   margin: 1em 0;
+   padding: 5px;
+   background-color: #FFF8D7;
+ }
+ div.comment {
+   margin-top: 5px;
+ }
+ div.swim {
+   text-align: center;
+ }
+ a.swim {
+   color: blue;
+   font-size: 120%;
+   margin: 0em 1em;
+ }
+ a.showComment {
+   clear: both;
+ }
+ input {
+   width: 100%;
+ }
