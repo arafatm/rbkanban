@@ -78,13 +78,22 @@ var Feature = function(id, title, status, state) {
 };
 
 var viewModel = {
-  statuses: statuses,
-  states: states,
-  features: ko.observableArray([]),
-  filterByStatus: function(status) {
-    return ko.utils.arrayFilter(this.features(), function(feature) {
-      return feature.status() == status;
-    });
-  }
-};
+  statuses: ko.observableArray(statuses),
+  states: ko.observableArray(states),
+  features: ko.observableArray([])
+}
+
+viewModel.filterByStatus= ko.dependentObservable(function() {
+  console.log('Filtering' + new Date());
+  var result = [];
+  ko.utils.arrayForEach(statuses, function(status) {
+    result[status] = result[status] || []; 
+  });
+  ko.utils.arrayForEach(this.features(), function(feature) {
+    var status = feature.status() || 0; 
+    result[status].push(feature);
+  });
+  return result;
+}, viewModel);
+
 ko.applyBindings(viewModel);

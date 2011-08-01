@@ -19,10 +19,10 @@
 <td>
 <h2>
 <span data-bind="text: $data"></span>
-(<span data-bind="text: viewModel.filterByStatus($data).length"></span>)
+(<span data-bind="text: viewModel.filterByStatus()[$data].length"></span>)
 <span data-bind="text: new Date()"></span> 
 </h2>
-<div data-bind="template: { name: 'features', foreach: viewModel.filterByStatus($data), afterAdd:  function(elem) { $(elem).hide().fadeIn(2000) } }">
+<div data-bind="template: { name: 'features', foreach: viewModel.filterByStatus()[$data], afterAdd:  function(elem) { $(elem).hide().fadeIn(2000) } }">
 </div>
 </td>
 </script>
