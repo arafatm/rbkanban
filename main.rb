@@ -9,6 +9,10 @@ class Feature
   key :title, String
 end
 
-get '/' do        
+get '/' do
+  File.read(File.join('public', 'index.html'))
+end
+
+get '/features' do        
   Feature.all.to_json
 end
