@@ -29,22 +29,36 @@ var Feature = function(id, title, status, state) {
       data: { "comment": comment },
       dataType: 'json',
       success: function(data) {
-        console.log(data);
         $.each(data, function(fk, fv) {
-          console.log(fk + ": " + fv.comment + ": " + fv.created_at);
-          console.log(this);
           f.comments.unshift(new Comment(fv.comment, fv.created_at));
         });
       },
       error: function(msg) {
-               console.log( ko.toJS(msg) );
+               console.log( msg.responseText );
              }
     });
     //this.comments.unshift(new Comment(comment, createdon));
   }
 
-  this.state.subscribe(function(newvalue) {
+  this.state.subscribe(function(newstate) {
     //this.addComment('Changing state from ' + state + ' to ' + newvalue);
+    var f = this;
+    $.ajax({
+      type: "POST",
+      url: '/feature/'+this.id+'/state',
+      data: { "state": newstate },
+      dataType: 'json',
+      success: function(data) {
+        console.log(f);
+        $.each(data, function(fk, fv) {
+          console.log(fk + ": " + fv.comment + ": " + fv.created_at);
+          f.comments.unshift(new Comment(fv.comment, fv.created_at));
+        });
+      },
+      error: function(msg) {
+               console.log(msg.responseText);
+             }
+    });
   }, this);
 
   // Comments

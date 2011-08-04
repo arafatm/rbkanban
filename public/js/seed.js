@@ -7,6 +7,6 @@ $.getJSON("http://localhost:9393/features", function(data) {
     });
     viewModel.features.push(f);
   });
-  f = viewModel.features()[0];
-  f.addComment("Comment " + new Date());
+  //f = viewModel.features()[0];
+  //f.addComment("Comment " + new Date());
 });
