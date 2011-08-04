@@ -20,7 +20,6 @@
 <h2>
 <span data-bind="text: $data"></span>
 (<span data-bind="text: viewModel.filterByStatus()[$data].length"></span>)
-<span data-bind="text: new Date()"></span> 
 </h2>
 <div data-bind="template: { name: 'features', foreach: viewModel.filterByStatus()[$data], afterAdd:  function(elem) { $(elem).hide().fadeIn(2000) } }">
 </div>
@@ -29,7 +28,6 @@
 
 <script id="features" type="text/html">
 <div class='feature' data-bind="attr:{ 'class': state }">
-  <span data-bind="text: new Date()" />
   <a class="showComment" data-bind="text: title, click: function(e) { showDetails(e) }" />
   <div class="details" data-bind="visible: false">
     <select data-bind="options: states, value: state" />
