@@ -10,14 +10,16 @@ class Feature
   key :title, String
   key :status, String
   key :state, String
-
-  key :comments, Array
+  many :comments
+  timestamps!
   
 end
 
 class Comment
-  include MongoMapper::Document
+  include MongoMapper::EmbeddedDocument
+  plugin MongoMapper::Plugins::Timestamps
+
   key :comment, String
-  key :createdon, Time
+  timestamps!
 end
 

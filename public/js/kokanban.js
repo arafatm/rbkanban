@@ -19,11 +19,32 @@ var Feature = function(id, title, status, state) {
   this.comments = ko.observableArray([]);
 
   this.addComment = function(comment, createdon) {
-    this.comments.unshift(new Comment(comment, createdon));
+    console.log('addComment ' + comment);
+    console.log(this.id + ': ' + this.title());
+    var f = this;
+
+    $.ajax({
+      type: "PUT",
+      url: '/feature/'+this.id+'/comment',
+      data: { "comment": comment },
+      dataType: 'json',
+      success: function(data) {
+        console.log(data);
+        $.each(data, function(fk, fv) {
+          console.log(fk + ": " + fv.comment + ": " + fv.created_at);
+          console.log(this);
+          f.comments.unshift(new Comment(fv.comment, fv.created_at));
+        });
+      },
+      error: function(msg) {
+               console.log( ko.toJS(msg) );
+             }
+    });
+    //this.comments.unshift(new Comment(comment, createdon));
   }
 
   this.state.subscribe(function(newvalue) {
-    this.addComment('Changing state from ' + state + ' to ' + newvalue);
+    //this.addComment('Changing state from ' + state + ' to ' + newvalue);
   }, this);
 
   // Comments
@@ -84,7 +105,6 @@ var viewModel = {
 }
 
 viewModel.filterByStatus= ko.dependentObservable(function() {
-  console.log('Filtering' + new Date());
   var result = [];
   ko.utils.arrayForEach(statuses, function(status) {
     result[status] = result[status] || []; 

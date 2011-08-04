@@ -10,9 +10,28 @@ class Feature
 end
 
 get '/' do
+  puts
   File.read(File.join('public', 'index.html'))
 end
 
 get '/features' do        
+  3.times do |i|; puts; end
   Feature.all.to_json
+end
+
+put '/feature/:id/comment' do
+  puts "***"
+  puts params
+  puts params["comment"]
+
+  f = Feature.find(params['id'])
+
+  if f 
+    c = f.comments << Comment.new(:comment => params["comment"])
+    if f.save
+      return c.to_json
+    end
+  end
+  error 410, "yer mom"
+
 end
