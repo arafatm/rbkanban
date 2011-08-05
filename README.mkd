@@ -10,3 +10,4 @@ Simple kanban board. Does fuckall right now
 - Display cycle time
 - Seperate 'backlog' vs 'in progress' boards
 - Tests
+- Push server (websockets?)

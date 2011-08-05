@@ -17,6 +17,18 @@ get '/features' do
   Feature.all.to_json
 end
 
+put '/feature' do
+  f = Feature.new(:title => params["feature"], 
+                  :status => "Backlog",
+                  :state => "Ready")
+  f.comments << Comment.new(:comment => "Created Feature")
+  if f.save
+    return f.to_json
+  end
+  error 410, "yer mom"
+end
+
+
 post '/feature/:id/state' do
   f = Feature.find(params['id'])
   if f
@@ -53,5 +65,4 @@ put '/feature/:id/comment' do
     end
   end
   error 410, "yer mom"
-
 end

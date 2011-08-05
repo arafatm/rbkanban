@@ -64,3 +64,6 @@ div {
  input {
    width: 100%;
  }
+ input#newfeature {
+   width: 50%;
+ }

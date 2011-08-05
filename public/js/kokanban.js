@@ -19,8 +19,6 @@ var Feature = function(id, title, status, state) {
   this.comments = ko.observableArray([]);
 
   this.addComment = function(comment, createdon) {
-    console.log('addComment ' + comment);
-    console.log(this.id + ': ' + this.title());
     var f = this;
 
     $.ajax({
@@ -49,9 +47,7 @@ var Feature = function(id, title, status, state) {
       data: { "state": newstate },
       dataType: 'json',
       success: function(data) {
-        console.log(f);
         $.each(data, function(fk, fv) {
-          console.log(fk + ": " + fv.comment + ": " + fv.created_at);
           f.comments.unshift(new Comment(fv.comment, fv.created_at));
         });
       },
@@ -107,9 +103,7 @@ var Feature = function(id, title, status, state) {
       data: { "status": newstatus },
       dataType: 'json',
       success: function(data) {
-        console.log(f);
         $.each(data, function(fk, fv) {
-          console.log(fk + ": " + fv.comment + ": " + fv.created_at);
           f.comments.unshift(new Comment(fv.comment, fv.created_at));
         });
         f.status(newstatus);
@@ -132,7 +126,30 @@ var Feature = function(id, title, status, state) {
 var viewModel = {
   statuses: ko.observableArray(statuses),
   states: ko.observableArray(states),
-  features: ko.observableArray([])
+  features: ko.observableArray([]),
+  addFeature: function(form) {
+    if (form['newFeature'].value.length > 0){
+      var newFeature = form['newFeature'].value;
+      $.ajax({
+        type: "PUT",
+        url: '/feature',
+        data: { "feature": newFeature },
+        dataType: 'json',
+        success: function(feature) {
+          var f = new Feature(feature.id, feature.title, 
+            feature.status, feature.state);
+          var cm = feature.comments[0];
+          f.comments.push(new Comment(cm.comment, cm.created_at));
+          viewModel.features.push(f);
+          form['newFeature'].value = '';
+        },
+        error: function(msg) {
+                 console.log( msg.responseText );
+               }
+      });
+    }
+  }
+
 }
 
 viewModel.filterByStatus= ko.dependentObservable(function() {
