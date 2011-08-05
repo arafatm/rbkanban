@@ -4,6 +4,7 @@ Simple kanban board. Does fuckall right now
 
 - Modal add new feature
 - Mark feature 'Done'
+- Sort features
 - Assign points
 - Authentication (google?)
 - Display cycle time
