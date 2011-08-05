@@ -1,0 +1,11 @@
+Simple kanban board. Does fuckall right now
+
+# TODO
+
+- Modal add new feature
+- Mark feature 'Done'
+- Assign points
+- Authentication (google?)
+- Display cycle time
+- Seperate 'backlog' vs 'in progress' boards
+- Tests
