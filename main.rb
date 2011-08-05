@@ -10,23 +10,16 @@ class Feature
 end
 
 get '/' do
-  puts
   File.read(File.join('public', 'index.html'))
 end
 
 get '/features' do        
-  3.times do |i|; puts; end
   Feature.all.to_json
 end
 
 post '/feature/:id/state' do
-  3.times do; puts; end
-  puts "***"
-  puts params
-
   f = Feature.find(params['id'])
   if f
-    puts f.state
     c = "Changing state from " + f.state + " to " + params['state']
     f.state = params['state']
     c = f.comments << Comment.new(:comment => c)
@@ -37,11 +30,20 @@ post '/feature/:id/state' do
   error 410, "yer moms mom" 
 end
 
-put '/feature/:id/comment' do
-  puts "***"
-  puts params
-  puts params["comment"]
+post '/feature/:id/status' do
+  f = Feature.find(params['id'])
+  if f
+    c = "Changing status from " + f.status + " to " + params['status']
+    f.status = params['status']
+    c = f.comments << Comment.new(:comment => c)
+    if f.save
+      return c.to_json
+    end
+  end
+  error 410, "yer moms mom" 
+end
 
+put '/feature/:id/comment' do
   f = Feature.find(params['id'])
 
   if f 

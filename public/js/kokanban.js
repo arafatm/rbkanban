@@ -69,7 +69,6 @@ var Feature = function(id, title, status, state) {
     }
   }
 
-
   // Swimming
   this.canSwimForward = ko.dependentObservable(function() {
     if (this.status() != statuses[statuses.length - 1]) {
@@ -87,8 +86,7 @@ var Feature = function(id, title, status, state) {
     var elem = $(e.target);
     for(var i = 1; i < statuses.length; i++) {
       if (this.status() == statuses[i]) {
-        this.addComment('Swimming back from '+this.status()+' to '+(statuses[i-1]));
-        this.status(statuses[i-1]);
+        this.swim(statuses[i-1]);
         break;
       }
     }
@@ -96,20 +94,39 @@ var Feature = function(id, title, status, state) {
   this.swimForward = function() {
     for(var i = 0; i < (statuses.length-1); i++) {
       if (this.status() == statuses[i]) {
-        this.addComment('Swimming forward from '+this.status()+' to '+(statuses[i+1]));
-        this.status(statuses[i+1]);
+        this.swim(statuses[i+1]);
         break;
       }
     }
   },
-  this.showDetails = function(e) 
-  {
-    var elem = $(e.target); 
-    var show = !elem.next().is(":visible")
-      $(".details").hide();
-    if(show) 
-      elem.next().toggle();
-  }
+    this.swim = function(newstatus) {
+      var f = this;
+      $.ajax({
+        type: "POST",
+      url: '/feature/'+this.id+'/status',
+      data: { "status": newstatus },
+      dataType: 'json',
+      success: function(data) {
+        console.log(f);
+        $.each(data, function(fk, fv) {
+          console.log(fk + ": " + fv.comment + ": " + fv.created_at);
+          f.comments.unshift(new Comment(fv.comment, fv.created_at));
+        });
+        f.status(newstatus);
+      },
+      error: function(msg) {
+               console.log(msg.responseText);
+             }
+      });
+    },
+    this.showDetails = function(e) 
+    {
+      var elem = $(e.target); 
+      var show = !elem.next().is(":visible")
+        $(".details").hide();
+      if(show) 
+        elem.next().toggle();
+    }
 };
 
 var viewModel = {
