@@ -3,8 +3,9 @@ require 'bundler/setup'
 require 'json'         
 require 'mongo_mapper'
 
-MongoMapper.connection = Mongo::Connection.new('localhost')
-MongoMapper.database = 'kanban'
+MongoMapper.connection = Mongo::Connection.new('staff.mongohq.com', 10014)
+MongoMapper.database = 'rbkanban'
+MongoMapper.database.authenticate('rbkanban', 'rbkanban')
 
 class Feature 
   include MongoMapper::Document
