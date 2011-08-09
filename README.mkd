@@ -1,13 +1,21 @@
 Simple kanban board. Does fuckall right now
 
+Sample: http://empty-water-936.heroku.com/
+
 # TODO
 
-- Modal add new feature
 - Mark feature 'Done'
-- Sort features
 - Assign points
+- reset state to 'ready' when changing status
 - Authentication (google?)
 - Display cycle time
 - Seperate 'backlog' vs 'in progress' boards
 - Tests
 - Push server (websockets?)
+- http://timeago.yarp.com/
+- Sort features
+- filter by state e.g. show impeded
+
+# DONE
+
+- add new feature
