@@ -27,8 +27,12 @@ get '/login' do
 end
 
 post '/login' do
-  session['user'] = params['user']
-  redirect '/'
+  if params['user'].length > 3
+    session['user'] = params['user']
+    redirect '/'
+  else
+    redirect '/login'
+  end
 end
 
 get '/logout' do

@@ -106,3 +106,7 @@ div {
  div#newfeature input#newfeature {
    width: 50%;
  }
+ /* Login */
+ form#login {
+   margin: 3em;
+ }
