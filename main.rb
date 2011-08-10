@@ -9,8 +9,32 @@ class Feature
   key :title, String
 end
 
+enable :sessions
+
+before do
+  if session['login'] == nil and request.path != '/login'
+    redirect '/login'
+  end
+end
+
 get '/' do
-  File.read(File.join('public', 'index.html'))
+  #File.read(File.join('public', 'index.html'))
+  erb :index
+end
+
+get '/login' do
+  erb :login
+end
+
+post '/login' do
+  session['login'] = params['login']
+  redirect '/'
+  #File.read(File.join('public', 'login.html'))
+end
+
+get '/logout' do
+  session['login'] = nil
+  redirect '/login'
 end
 
 get '/features' do        

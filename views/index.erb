@@ -8,6 +8,12 @@
 <script src="js/knockout-1.2.1.js" type="text/javascript"></script>
 </head>
 <body>
+<div id='header'>
+  <div id='user'>Welcome <%= session['login'] %></div>
+  <div id='logout'>
+    <a href="/logout">Logout</a>
+  </div>
+</div>
 <div id='newfeature'>
   <form data-bind="submit: addFeature">
     <label>New Feature: </label>
@@ -60,15 +66,16 @@
     <li>Add 'new feature'</li>
     <li>Swim feature between statuses</li>
     <li>Click on feature to display comments</li>
-    <li>Change state of feature between 'Ready', 'Progress', and
-    'Impeded'<li> 
+    <li>Change state of feature </li> 
+    <li>Changing state changes color of card</li>
     <li>Add a comment</li>
-    <li>Changing status or state of feature inserts a comment<li>
+    <li>Changing status or state of feature inserts a comment</li>
   </ul>
   <h3>TODO</h3>
   <ul>
-    <li>Simple login</li>
+    <li>login</li>
     <li>Mark feature 'Done'</li>
+    <li>ajax progress indicator</li>
     <li>Assign points</li>
     <li>reset state to 'ready' when changing status</li>
     <li>Authentication (google?)</li>
@@ -79,6 +86,13 @@
     <li>http://timeago.yarp.com/</li>
     <li>Sort features</li>
     <li>filter by state e.g. show impeded</li>
+  </ul>
+  <h3>NOTE</h3>
+  <ul>
+    <li><a href="http://colorschemedesigner.com/#3l51Tw0w0w0w0">color scheme</a></li>
+    <li>Light Blue: #03899C</li>
+    <li>Dark Blue: #133AAC</li>
+    <li>Green: #00C322</li>
   </ul>
 </div>
 <!-- Code -->
