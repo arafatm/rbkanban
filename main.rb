@@ -45,7 +45,8 @@ put '/feature' do
   f = Feature.new(:title => params["feature"], 
                   :status => "Backlog",
                   :state => "Ready")
-  f.comments << Comment.new(:comment => "Created Feature")
+  f.comments << Comment.new(:user => session['user'],
+                            :comment => "Created Feature")
   if f.save
     return f.to_json
   end
@@ -58,7 +59,8 @@ post '/feature/:id/state' do
   if f
     c = "Changing state from " + f.state + " to " + params['state']
     f.state = params['state']
-    c = f.comments << Comment.new(:comment => c)
+    c = f.comments << Comment.new(:user => session['user'],
+                                  :comment => c)
     if f.save
       return c.to_json
     end
@@ -71,7 +73,8 @@ post '/feature/:id/status' do
   if f
     c = "Changing status from " + f.status + " to " + params['status']
     f.status = params['status']
-    c = f.comments << Comment.new(:comment => c)
+    c = f.comments << Comment.new(:user => session['user'],
+                                  :comment => c)
     if f.save
       return c.to_json
     end
@@ -82,8 +85,9 @@ end
 put '/feature/:id/comment' do
   
   f = Feature.find(params['id'])
-  c = f.addComment(session['user'], params['comment'])
-  if c 
+  c = f.comments << Comment.new(:user => session['user'], 
+                                :comment => params['comment'])
+  if f.save 
       return c.to_json
   else
     error 410, "yer mom"
