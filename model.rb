@@ -14,6 +14,19 @@ class Feature
   key :state, String
   many :comments
   timestamps!
+
+  def user
+    comments.last.user
+  end
+
+  def addComment(user, comment) 
+    c = comments << Comment.new(:comment => comment, :user => user)
+    if save
+      return c
+    else
+      return nil
+    end
+  end
   
 end
 
@@ -22,6 +35,7 @@ class Comment
   plugin MongoMapper::Plugins::Timestamps
 
   key :comment, String
+  key :user, String
   timestamps!
 end
 

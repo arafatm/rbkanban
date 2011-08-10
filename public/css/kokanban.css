@@ -52,6 +52,7 @@ div {
  }
  div.comment {
    margin-top: 5px;
+   border-bottom: 1px solid black;
  }
  div.swim {
    text-align: center;
@@ -68,12 +69,15 @@ div {
    width: 100%;
  }
  /* README */
- div#readme h3 {
+ table#readme {
+   background-color: white;
+ }
+ table#readme h3 {
    margin: 1em;
    font-weight: 900;
    font-size: 120%;
  }
- div#readme ul {
+ table#readme ul {
    list-style-type: disc;
    margin-left: 1em;
    padding-left: 1em;

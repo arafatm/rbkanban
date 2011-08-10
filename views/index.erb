@@ -10,7 +10,7 @@
 </head>
 <body>
 <div id='header'>
-  <div id='user'>Welcome <%= session['login'] %></div>
+  <div id='user'>Welcome <%= session['user'] %></div>
   <div id='logout'>
     <a href="/logout">Logout</a>
   </div>
@@ -57,46 +57,53 @@
 </script>
 <script id='comments' type="text/html">
 <div class="comment">
-<em data-bind="text: datestamp" />:
+<em data-bind="text: user" />
+<span data-bind="text: datestamp" /><br />
 <span data-bind="text: comment" />
 </div>
 </script>
-<div id='readme'>
-  <h3>DONE</h3>
-  <ul>
-    <li>Add 'new feature'</li>
-    <li>Swim feature between statuses</li>
-    <li>Click on feature to display comments</li>
-    <li>Change state of feature </li> 
-    <li>Changing state changes color of card</li>
-    <li>Add a comment</li>
-    <li>Changing status or state of feature inserts a comment</li>
-    <li>login</li>
-    <li>Displaying timestamps using http://timeago.yarp.com/</li>
-  </ul>
-  <h3>TODO</h3>
-  <ul>
-    <li>Mark 'who' made a change</li>
-    <li>Mark feature 'Done'</li>
-    <li>ajax progress indicator</li>
-    <li>Assign points</li>
-    <li>reset state to 'ready' when changing status</li>
-    <li>Authentication (google?)</li>
-    <li>Display cycle time</li>
-    <li>Seperate 'backlog' vs 'in progress' boards</li>
-    <li>Tests</li>
-    <li>Push server (websockets?)</li>
-    <li>Sort features</li>
-    <li>filter by state e.g. show impeded</li>
-  </ul>
-  <h3>NOTE</h3>
-  <ul>
-    <li><a href="http://colorschemedesigner.com/#3l51Tw0w0w0w0">color scheme</a></li>
-    <li>Light Blue: #03899C</li>
-    <li>Dark Blue: #133AAC</li>
-    <li>Green: #00C322</li>
-  </ul>
-</div>
+<table id='readme'>
+  <tr>
+    <td>
+      <h3>DONE</h3>
+      <ul>
+        <li>Add 'new feature'</li>
+        <li>Swim feature between statuses</li>
+        <li>Click on feature to display comments</li>
+        <li>Change state of feature </li> 
+        <li>Changing state changes color of card</li>
+        <li>Add a comment</li>
+        <li>Changing status or state of feature inserts a comment</li>
+        <li>login</li>
+        <li>Displaying timestamps using http://timeago.yarp.com/</li>
+      </ul>
+    </td><td>
+      <h3>TODO</h3>
+      <ul>
+        <li>Mark 'who' made a change</li>
+        <li>Mark feature 'Done'</li>
+        <li>ajax progress indicator</li>
+        <li>Assign points</li>
+        <li>reset state to 'ready' when changing status</li>
+        <li>Authentication (google?)</li>
+        <li>Display cycle time</li>
+        <li>Seperate 'backlog' vs 'in progress' boards</li>
+        <li>Tests</li>
+        <li>Push server (websockets?)</li>
+        <li>Sort features</li>
+        <li>filter by state e.g. show impeded</li>
+      </ul>
+    </td><td>
+      <h3>NOTE</h3>
+      <ul>
+        <li><a href="http://colorschemedesigner.com/#3l51Tw0w0w0w0">color scheme</a></li>
+        <li>Light Blue: #03899C</li>
+        <li>Dark Blue: #133AAC</li>
+        <li>Green: #00C322</li>
+      </ul>
+    </td>
+  </tr>
+</table>
 <!-- Code -->
 <script src="js/kokanban.js" type="text/javascript"></script>
 <script src="js/seed.js" type="text/javascript"></script>

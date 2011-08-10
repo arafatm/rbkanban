@@ -12,13 +12,13 @@ end
 enable :sessions
 
 before do
-  if session['login'] == nil and request.path != '/login'
+  puts request.path
+  if session['user'] == nil and request.path != '/login'
     redirect '/login'
   end
 end
 
 get '/' do
-  #File.read(File.join('public', 'index.html'))
   erb :index
 end
 
@@ -27,14 +27,13 @@ get '/login' do
 end
 
 post '/login' do
-  session['login'] = params['login']
+  session['user'] = params['user']
   redirect '/'
-  #File.read(File.join('public', 'login.html'))
 end
 
 get '/logout' do
-  session['login'] = nil
-  redirect '/login'
+  session['user'] = nil
+  redirect '/user'
 end
 
 get '/features' do        
@@ -81,13 +80,12 @@ post '/feature/:id/status' do
 end
 
 put '/feature/:id/comment' do
+  
   f = Feature.find(params['id'])
-
-  if f 
-    c = f.comments << Comment.new(:comment => params["comment"])
-    if f.save
+  c = f.addComment(session['user'], params['comment'])
+  if c 
       return c.to_json
-    end
+  else
+    error 410, "yer mom"
   end
-  error 410, "yer mom"
 end

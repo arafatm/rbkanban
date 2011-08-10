@@ -1,8 +1,9 @@
 var statuses = [ "Backlog", "Analysis", "Dev", "Verify", "Release" ];
 var states = [ "Ready", "Progress", "Impeded" ];
 
-var Comment = function(comment, created_at) {
+var Comment = function(comment, user, created_at) {
   this.comment = comment;
+  this.user = user; 
   this.created_at = new Date(created_at);
   this.datestamp = jQuery.timeago(this.created_at);
 }
@@ -24,18 +25,16 @@ var Feature = function(id, title, status, state) {
       dataType: 'json',
       success: function(data) {
         $.each(data, function(fk, fv) {
-          f.comments.unshift(new Comment(fv.comment, fv.created_at));
+          f.comments.unshift(new Comment(fv.comment, fv.user, fv.created_at));
         });
       },
       error: function(msg) {
                console.log( msg.responseText );
              }
     });
-    //this.comments.unshift(new Comment(comment, created_at));
   }
 
   this.state.subscribe(function(newstate) {
-    //this.addComment('Changing state from ' + state + ' to ' + newvalue);
     var f = this;
     $.ajax({
       type: "POST",
@@ -44,7 +43,7 @@ var Feature = function(id, title, status, state) {
       dataType: 'json',
       success: function(data) {
         $.each(data, function(fk, fv) {
-          f.comments.unshift(new Comment(fv.comment, fv.created_at));
+          f.comments.unshift(new Comment(fv.comment, fv.user, fv.created_at));
         });
       },
       error: function(msg) {
@@ -100,7 +99,7 @@ var Feature = function(id, title, status, state) {
       dataType: 'json',
       success: function(data) {
         $.each(data, function(fk, fv) {
-          f.comments.unshift(new Comment(fv.comment, fv.created_at));
+          f.comments.unshift(new Comment(fv.comment, fv.user, fv.created_at));
         });
         f.status(newstatus);
       },
@@ -135,7 +134,7 @@ var viewModel = {
           var f = new Feature(feature.id, feature.title, 
             feature.status, feature.state);
           var cm = feature.comments[0];
-          f.comments.push(new Comment(cm.comment, cm.created_at));
+          f.comments.push(new Comment(cm.comment, cm.user, cm.created_at));
           viewModel.features.push(f);
           form['newFeature'].value = '';
         },
