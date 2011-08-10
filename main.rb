@@ -38,6 +38,7 @@ get '/logout' do
 end
 
 get '/features' do        
+  puts Feature.first.to_json
   Feature.all.to_json
 end
 

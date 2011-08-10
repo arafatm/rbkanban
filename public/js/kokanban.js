@@ -1,14 +1,10 @@
 var statuses = [ "Backlog", "Analysis", "Dev", "Verify", "Release" ];
 var states = [ "Ready", "Progress", "Impeded" ];
 
-var Comment = function(comment, createdon) {
+var Comment = function(comment, created_at) {
   this.comment = comment;
-  if (typeof createdon == "undefined") {
-    this.createdon = new Date();
-  }
-  else {
-    this.createdon = new Date(createdon);
-  }
+  this.created_at = new Date(created_at);
+  this.datestamp = jQuery.timeago(this.created_at);
 }
 
 var Feature = function(id, title, status, state) {
@@ -18,7 +14,7 @@ var Feature = function(id, title, status, state) {
   this.state = ko.observable(state);
   this.comments = ko.observableArray([]);
 
-  this.addComment = function(comment, createdon) {
+  this.addComment = function(comment, created_at) {
     var f = this;
 
     $.ajax({
@@ -35,7 +31,7 @@ var Feature = function(id, title, status, state) {
                console.log( msg.responseText );
              }
     });
-    //this.comments.unshift(new Comment(comment, createdon));
+    //this.comments.unshift(new Comment(comment, created_at));
   }
 
   this.state.subscribe(function(newstate) {

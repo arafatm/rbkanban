@@ -3,7 +3,8 @@ $.getJSON("/features", function(data) {
   $.each(data, function(fk, fv) {
     var f = new Feature(fv.id, fv.title, fv.status, fv.state);
     $.each(fv.comments, function(ck, cv) {
-      f.comments.unshift(new Comment(cv.comment, cv.createdon));
+      console.log(cv);
+      f.comments.unshift(new Comment(cv.comment, cv.created_at));
     });
     viewModel.features.push(f);
   });
