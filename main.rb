@@ -19,6 +19,7 @@ before do
 end
 
 get '/' do
+  puts "env = #{ENV['RACK_ENV']}"
   erb :index
 end
 
