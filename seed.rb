@@ -10,8 +10,9 @@ states = ["Ready", "Progress", "Impeded"]
 10.times do |i|
   f = Feature.new(:title => "Feature #{i}",
                   :status => statuses[rand(statuses.size)],
-                  :state => states[rand(states.size)])
-  5.times do |j|
+                  :state => states[rand(states.size)],
+                  :complete => false)
+  rand(5).to_i.times do |j|
     f.comments << Comment.new(:comment => "Comment #{j}")
   end
   f.save
