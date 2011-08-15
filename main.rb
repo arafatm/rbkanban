@@ -12,14 +12,12 @@ end
 enable :sessions
 
 before do
-  puts request.path
   if session['user'] == nil and request.path != '/login'
     redirect '/login'
   end
 end
 
 get '/' do
-  puts "env = #{ENV['RACK_ENV']}"
   erb :index
 end
 
@@ -42,7 +40,6 @@ get '/logout' do
 end
 
 get '/features' do        
-  puts Feature.first.to_json
   Feature.all.to_json
 end
 

@@ -3,9 +3,15 @@ require 'bundler/setup'
 require 'json'         
 require 'mongo_mapper'
 
-MongoMapper.connection = Mongo::Connection.new('staff.mongohq.com', 10014)
-MongoMapper.database = 'rbkanban'
-MongoMapper.database.authenticate('rbkanban', 'rbkanban')
+if ENV['RACK_ENV'] == 'production'
+  MongoMapper.connection = Mongo::Connection.new('staff.mongohq.com', 10014)
+  MongoMapper.database = 'rbkanban'
+  MongoMapper.database.authenticate('rbkanban', 'rbkanban')
+else
+  MongoMapper.connection = Mongo::Connection.new('localhost')
+  MongoMapper.database = 'rbkanban'
+  MongoMapper.database.authenticate('rbkanban', 'rbkanban')
+end
 
 class Feature 
   include MongoMapper::Document
