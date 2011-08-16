@@ -43,6 +43,10 @@ get '/features' do
   Feature.all.to_json
 end
 
+get '/features/working' do
+  Feature.find_all_by_complete(false).to_json
+end
+
 put '/feature' do
   f = Feature.new(:title => params["feature"], 
                   :status => "Backlog",

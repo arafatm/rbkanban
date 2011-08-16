@@ -1,5 +1,5 @@
 //$.getJSON('data.json', function(data) {
-$.getJSON("/features", function(data) {
+$.getJSON("/features/working", function(data) {
   $.each(data, function(fk, fv) {
     var f = new Feature(fv.id, fv.title, fv.status, fv.state, fv.complete);
     $.each(fv.comments, function(ck, cv) {
