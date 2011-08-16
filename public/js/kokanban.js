@@ -9,21 +9,42 @@ var Comment = function(comment, user, created_at) {
 }
 
 var Feature = function(id, title, status, state) {
-  this.id = id;
-  this.title = ko.observable(title);
-  this.status = ko.observable(status);
-  this.state = ko.observable(state);
-  this.comments = ko.observableArray([]);
+  var self = this;
+  self.id = id;
+  self.title = ko.observable(title);
+  self.status = ko.observable(status);
+  self.state = ko.observable(state);
+  self.state.edit = ko.dependentObservable({
+    read: self.state,
+    write: function(newstate) {
+      $.ajax({
+        type: "POST",
+        url: '/feature/'+self.id+'/state',
+        data: { "state": newstate },
+        dataType: 'json',
+        success: function(data) {
+          $.each(data, function(fk, fv) {
+            self.comments.unshift(new Comment(fv.comment, fv.user, fv.created_at));
+          });
+          self.state(newstate);
+        },
+        error: function(msg) {
+                 console.log(msg.responseText);
+               }
+      });
+    }
+  });
+  self.comments = ko.observableArray([]);
 
-  this.addComment = function(form) {
+  self.addComment = function(form) {
     var newComment;
     if (form['newComment'].value.length > 0){
       newComment = form['newComment'].value;
-      var f = this;
+      var f = self;
 
       $.ajax({
         type: "PUT",
-        url: '/feature/'+this.id+'/comment',
+        url: '/feature/'+self.id+'/comment',
         data: { "comment": newComment },
         dataType: 'json',
         success: function(data) {
@@ -37,25 +58,7 @@ var Feature = function(id, title, status, state) {
                }
       });
     }
-  }
-
-  this.state.subscribe(function(newstate) {
-    var f = this;
-    $.ajax({
-      type: "POST",
-      url: '/feature/'+this.id+'/state',
-      data: { "state": newstate },
-      dataType: 'json',
-      success: function(data) {
-        $.each(data, function(fk, fv) {
-          f.comments.unshift(new Comment(fv.comment, fv.user, fv.created_at));
-        });
-      },
-      error: function(msg) {
-               console.log(msg.responseText);
-             }
-    });
-  }, this);
+  };
 
   // Swimming
   this.canSwimForward = ko.dependentObservable(function() {
@@ -78,7 +81,7 @@ var Feature = function(id, title, status, state) {
         break;
       }
     }
-  }
+  };
   this.swimForward = function() {
     for(var i = 0; i < (statuses.length-1); i++) {
       if (this.status() == statuses[i]) {
@@ -86,11 +89,11 @@ var Feature = function(id, title, status, state) {
         break;
       }
     }
-  },
-    this.swim = function(newstatus) {
-      var f = this;
-      $.ajax({
-        type: "POST",
+  };
+  this.swim = function(newstatus) {
+    var f = this;
+    $.ajax({
+      type: "POST",
       url: '/feature/'+this.id+'/status',
       data: { "status": newstatus },
       dataType: 'json',
@@ -103,16 +106,15 @@ var Feature = function(id, title, status, state) {
       error: function(msg) {
                console.log(msg.responseText);
              }
-      });
-    },
-    this.showDetails = function(e) 
-    {
-      var elem = $(e.target); 
-      var show = !elem.next().is(":visible")
-        $(".details").hide();
-      if(show) 
-        elem.next().toggle();
-    }
+    });
+  };
+  this.showDetails = function(e) {
+    var elem = $(e.target); 
+    var show = !elem.next().is(":visible")
+      $(".details").hide();
+    if(show) 
+      elem.next().toggle();
+  };
 };
 
 var viewModel = {
