@@ -15,23 +15,28 @@ var Feature = function(id, title, status, state) {
   this.state = ko.observable(state);
   this.comments = ko.observableArray([]);
 
-  this.addComment = function(comment, created_at) {
-    var f = this;
+  this.addComment = function(form) {
+    var newComment;
+    if (form['newComment'].value.length > 0){
+      newComment = form['newComment'].value;
+      var f = this;
 
-    $.ajax({
-      type: "PUT",
-      url: '/feature/'+this.id+'/comment',
-      data: { "comment": comment },
-      dataType: 'json',
-      success: function(data) {
-        $.each(data, function(fk, fv) {
-          f.comments.unshift(new Comment(fv.comment, fv.user, fv.created_at));
-        });
-      },
-      error: function(msg) {
-               console.log( msg.responseText );
-             }
-    });
+      $.ajax({
+        type: "PUT",
+        url: '/feature/'+this.id+'/comment',
+        data: { "comment": newComment },
+        dataType: 'json',
+        success: function(data) {
+          $.each(data, function(fk, fv) {
+            f.comments.unshift(new Comment(fv.comment, fv.user, fv.created_at));
+          });
+          form['newComment'].value = '';
+        },
+        error: function(msg) {
+                 console.log( msg.responseText );
+               }
+      });
+    }
   }
 
   this.state.subscribe(function(newstate) {
@@ -51,14 +56,6 @@ var Feature = function(id, title, status, state) {
              }
     });
   }, this);
-
-  // Comments
-  this.updateFeature = function(form) {
-    if (form['newComment'].value.length > 0){
-      this.addComment(form['newComment'].value);
-      form['newComment'].value = '';
-    }
-  }
 
   // Swimming
   this.canSwimForward = ko.dependentObservable(function() {

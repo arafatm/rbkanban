@@ -44,7 +44,7 @@
   <a class="showComment" data-bind="text: title, click: function(e) { showDetails(e) }" />
   <div class="details" data-bind="visible: false">
     <select data-bind="options: states, value: state" />
-    <form data-bind="submit: updateFeature">
+    <form data-bind="submit: addComment">
       <input id="newComment" class='newComment' />
     </form>
     <div class="comments" data-bind="template: {name: 'comments', foreach: $data.comments}" />
