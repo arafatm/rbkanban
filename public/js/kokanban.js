@@ -188,4 +188,10 @@ viewModel.filterByStatus= ko.dependentObservable(function() {
   });
   return result;
 }, viewModel);
+
+viewModel.findFeatureByTitle = function(searchtitle) {
+  return ko.utils.arrayFirst(this.features(), function(feature) {
+    return ko.utils.stringStartsWith(feature.title(), searchtitle);
+  });
+};
 ko.applyBindings(viewModel);
