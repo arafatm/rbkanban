@@ -95,3 +95,17 @@ put '/feature/:id/comment' do
     error 410, "yer mom"
   end
 end
+
+post '/feature/:id/complete' do
+  f = Feature.find(params['id'])
+  if f
+    c = "Completing"
+    f.complete = true
+    c = f.comments << Comment.new(:user => session['user'],
+                                  :comment => c)
+    if f.save
+      return true.to_json
+    end
+  end
+  error 410, "Error completing #{f.title}" 
+end

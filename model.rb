@@ -18,6 +18,7 @@ class Feature
   key :title, String
   key :status, String
   key :state, String
+  key :complete, Boolean
   many :comments
   timestamps!
 

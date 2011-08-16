@@ -44,6 +44,7 @@
   <a class="showComment" data-bind="text: title, click: function(e) { showDetails(e) }" />
   <div class="details" data-bind="visible: false">
     <select data-bind="options: states, value: state.edit" />
+    <a data-bind="click: completion">Complete</a> 
     <form data-bind="submit: addComment">
       <input id="newComment" class='newComment' />
     </form>

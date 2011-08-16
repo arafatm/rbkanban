@@ -8,7 +8,7 @@ var Comment = function(comment, user, created_at) {
   this.datestamp = jQuery.timeago(this.created_at);
 }
 
-var Feature = function(id, title, status, state) {
+var Feature = function(id, title, status, state, complete) {
   var self = this;
   self.id = id;
   self.title = ko.observable(title);
@@ -27,6 +27,38 @@ var Feature = function(id, title, status, state) {
             self.comments.unshift(new Comment(fv.comment, fv.user, fv.created_at));
           });
           self.state(newstate);
+        },
+        error: function(msg) {
+                 console.log(msg.responseText);
+               }
+      });
+    }
+  });
+  self.complete = ko.observable(complete);
+  self.completion = function() {
+    $.ajax({
+      type: "POST",
+      url: '/feature/'+self.id+'/complete',
+      dataType: 'json',
+      success: function(data) {
+        console.log(ko.toJS(viewModel));
+        console.log(data);
+        viewModel.features.remove(self);
+      },
+      error: function(msg) {
+               console.log(msg.responseText);
+             }
+    });
+  };
+  self.complete.edit = ko.dependentObservable({
+    read: self.complete,
+    write: function(completion) {
+      $.ajax({
+        type: "POST",
+        url: '/feature/'+self.id+'/complete',
+        dataType: 'json',
+        success: function(data) {
+          console.log(ko.toJS(viewModel));
         },
         error: function(msg) {
                  console.log(msg.responseText);
@@ -131,7 +163,7 @@ var viewModel = {
         dataType: 'json',
         success: function(feature) {
           var f = new Feature(feature.id, feature.title, 
-            feature.status, feature.state);
+            feature.status, feature.state, feature.complete);
           var cm = feature.comments[0];
           f.comments.push(new Comment(cm.comment, cm.user, cm.created_at));
           viewModel.features.push(f);
@@ -143,7 +175,6 @@ var viewModel = {
       });
     }
   }
-
 }
 
 viewModel.filterByStatus= ko.dependentObservable(function() {
@@ -157,5 +188,4 @@ viewModel.filterByStatus= ko.dependentObservable(function() {
   });
   return result;
 }, viewModel);
-
 ko.applyBindings(viewModel);
