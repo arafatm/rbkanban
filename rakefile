@@ -1,0 +1,8 @@
+require './model.rb'
+desc "reset all features to incomplete"
+task :incomplete do
+  Feature.all.each do |f|
+    f.complete = false
+    f.save
+  end
+end
