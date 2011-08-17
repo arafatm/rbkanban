@@ -41,8 +41,6 @@ var Feature = function(id, title, status, state, complete) {
       url: '/feature/'+self.id+'/complete',
       dataType: 'json',
       success: function(data) {
-        console.log(ko.toJS(viewModel));
-        console.log(data);
         viewModel.features.remove(self);
       },
       error: function(msg) {
@@ -162,6 +160,7 @@ var viewModel = {
         data: { "feature": newFeature },
         dataType: 'json',
         success: function(feature) {
+          console.log(ko.toJS(feature));
           var f = new Feature(feature.id, feature.title, 
             feature.status, feature.state, feature.complete);
           var cm = feature.comments[0];
@@ -192,6 +191,11 @@ viewModel.filterByStatus= ko.dependentObservable(function() {
 viewModel.findFeatureByTitle = function(searchtitle) {
   return ko.utils.arrayFirst(this.features(), function(feature) {
     return ko.utils.stringStartsWith(feature.title(), searchtitle);
+  });
+};
+viewModel.findFeatureByID = function(searchid) {
+  return ko.utils.arrayFirst(this.features(), function(feature) {
+    return ko.utils.stringStartsWith(feature.id, searchid);
   });
 };
 ko.applyBindings(viewModel);

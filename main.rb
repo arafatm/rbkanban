@@ -48,15 +48,12 @@ get '/features/working' do
 end
 
 put '/feature' do
-  f = Feature.new(:title => params["feature"], 
-                  :status => "Backlog",
-                  :state => "Ready")
-  f.comments << Comment.new(:user => session['user'],
-                            :comment => "Created Feature")
-  if f.save
+  f = Feature.create(session['user'], params["feature"])
+  if f.class == Feature
     return f.to_json
+  else
+    error 410, f
   end
-  error 410, "yer mom"
 end
 
 
@@ -101,15 +98,10 @@ put '/feature/:id/comment' do
 end
 
 post '/feature/:id/complete' do
-  f = Feature.find(params['id'])
-  if f
-    c = "Completing"
-    f.complete = true
-    c = f.comments << Comment.new(:user => session['user'],
-                                  :comment => c)
-    if f.save
-      return true.to_json
-    end
+  f = Feature.complete(session['user'], params['id'])
+  if f.class == Feature
+    return f.to_json
+  else
+    error 410, f
   end
-  error 410, "Error completing #{f.title}" 
 end
