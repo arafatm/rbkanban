@@ -8,12 +8,20 @@ var Comment = function(comment, user, created_at) {
   this.datestamp = jQuery.timeago(this.created_at);
 }
 
-var Feature = function(id, title, status, state, complete) {
+var Feature = function(id, title, status, state, complete, points) {
   var self = this;
   self.id = id;
   self.title = ko.observable(title);
   self.status = ko.observable(status);
   self.state = ko.observable(state);
+  self.points = ko.observable(points);
+  self.points.edit = ko.dependentObservable({
+    read: self.points,
+    write: function(newpoints) {
+      self.updateFeature('/feature/'+self.id+'/points',
+        { "points": newpoints });
+    }
+  });
   self.state.edit = ko.dependentObservable({
     read: self.state,
     write: function(newstate) {
@@ -38,7 +46,6 @@ var Feature = function(id, title, status, state, complete) {
    */
   self.addComment = function(form) {
     var newComment;
-    console.log("Adding Comment");
     if (form['newComment'].value.length > 0){
       newComment = form['newComment'].value;
       var f = self;
@@ -49,7 +56,6 @@ var Feature = function(id, title, status, state, complete) {
         data: { "comment": newComment },
         dataType: 'json',
         success: function(f) {
-          console.log(ko.toJS(f));
           self.title(f.title);
           self.status(f.status);
           self.state(f.state);
@@ -79,6 +85,7 @@ var Feature = function(id, title, status, state, complete) {
         self.status(f.status);
         self.state(f.state);
         self.complete(f.complete);
+        self.points(f.points);
         self.comments([]);
         $.each(f.comments, function(ck, cv) {
           self.comments.unshift(
@@ -148,8 +155,8 @@ var viewModel = {
         data: { "feature": newFeature },
         dataType: 'json',
         success: function(feature) {
-          var f = new Feature(feature.id, feature.title, 
-            feature.status, feature.state, feature.complete);
+          var f = new Feature(feature.id, feature.title, feature.status,
+            feature.state, feature.complete, feature.points);
           var cm = feature.comments[0];
           f.comments.push(new Comment(cm.comment, cm.user, cm.created_at));
           viewModel.features.push(f);

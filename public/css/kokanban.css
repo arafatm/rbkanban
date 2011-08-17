@@ -57,6 +57,14 @@ div {
  div.swim {
    text-align: center;
  }
+ input.points {
+   width: 3em;
+ }
+ a.complete {
+   background-color: #F33;
+   border: 1px solid black;
+   padding: 5px;
+ }
  a.swim {
    color: blue;
    font-size: 120%;

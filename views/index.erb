@@ -47,10 +47,12 @@
 
 <script id="features" type="text/html">
 <div class='feature' data-bind="attr:{ 'class': state }">
+  <span data-bind="text: points" />
   <a class="showComment" data-bind="text: title, click: function(e) { showDetails(e) }" />
   <div class="details" data-bind="visible: false">
+    <input class="points" data-bind="value: points.edit" />
     <select data-bind="options: states, value: state.edit" />
-    <a data-bind="click: completion">Complete</a> 
+    <a class="complete" data-bind="click: completion">Complete</a> 
     <form data-bind="submit: addComment">
       <input id="newComment" class='newComment' />
     </form>
@@ -76,6 +78,7 @@
     <td>
       <h3>DONE</h3>
       <ul>
+        <li>8/17 Assign points</li>
         <li>8/17 reset state to 'ready' when changing status</li>
         <li>8/17 Why is ajax dialog-progress not displaying on initial page load</li>
         <li>8/17 ajax progress indicator</li>
@@ -94,7 +97,7 @@
     </td><td>
       <h3>TODO</h3>
       <ul>
-        <li>Assign points</li>
+        <li>Refactor Feature.new to pass named properties</li>
         <li>Refactor Feature functions to emulate state.edit</li>
         <li>Seperate 'backlog' vs 'in progress' boards</li>
         <li>Authentication (google?)</li>

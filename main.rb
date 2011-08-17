@@ -52,6 +52,10 @@ put '/feature' do
 end
 
 
+post '/feature/:id/points' do
+  respond Feature.points(session['user'],params['id'],params['points'])
+end
+
 post '/feature/:id/state' do
   respond Feature.changestate(session['user'],params['id'],params['state'])
 end

@@ -19,6 +19,7 @@ class Feature
   key :status, String
   key :state, String
   key :complete, Boolean
+  key :points, Integer
   many :comments
   timestamps!
 
@@ -37,6 +38,21 @@ class Feature
       return f
     else
       return "Error creating Feature"
+    end
+  end
+  def self.points(user, id, points)
+    f = Feature.find(id)
+    if f.class == Feature
+      c = "Updating points from #{f.points} to #{points}"
+      f.comments << Comment.new(:user => user, :comment => c)
+      f.points = points
+      if f.save
+        return f
+      else
+        return "Error updating points"
+      end
+    else
+      return "Could not find Feature"
     end
   end
   def self.changestate(user, id, state)
