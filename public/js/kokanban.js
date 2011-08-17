@@ -17,39 +17,24 @@ var Feature = function(id, title, status, state, complete) {
   self.state.edit = ko.dependentObservable({
     read: self.state,
     write: function(newstate) {
-      $.ajax({
-        type: "POST",
-        url: '/feature/'+self.id+'/state',
-        data: { "state": newstate },
-        dataType: 'json',
-        success: function(data) {
-          $.each(data, function(fk, fv) {
-            self.comments.unshift(new Comment(fv.comment, fv.user, fv.created_at));
-          });
-          self.state(newstate);
-        },
-        error: function(msg) {
-                 console.log(msg.responseText);
-               }
-      });
+      self.updateFeature('/feature/'+self.id+'/state',
+        { "state": newstate });
     }
   });
   self.complete = ko.observable(complete);
   self.completion = function() {
-    $.ajax({
-      type: "POST",
-      url: '/feature/'+self.id+'/complete',
-      dataType: 'json',
-      success: function(data) {
-        viewModel.features.remove(self);
-      },
-      error: function(msg) {
-               console.log(msg.responseText);
-             }
-    });
+    self.updateFeature('/feature/'+self.id+'/complete');
+    console.log("Updated complete = "+self.complete);
+    if (self.complete == true) {
+      viewModel.features.remove(self);
+    }
   };
   self.comments = ko.observableArray([]);
 
+  /* TODO:
+   * Refactor to not care data is coming from a form
+   * self.comment.new = ko.observable();
+   */
   self.addComment = function(form) {
     var newComment;
     if (form['newComment'].value.length > 0){
@@ -62,6 +47,7 @@ var Feature = function(id, title, status, state, complete) {
         data: { "comment": newComment },
         dataType: 'json',
         success: function(data) {
+          console.log(data);
           $.each(data, function(fk, fv) {
             f.comments.unshift(new Comment(fv.comment, fv.user, fv.created_at));
           });
@@ -73,6 +59,29 @@ var Feature = function(id, title, status, state, complete) {
       });
     }
   };
+
+  self.updateFeature = function(url, data) {
+    $.ajax({
+      type: "POST",
+      url: url,
+      data: data,
+      dataType: 'json',
+      success: function(f) {
+        self.title(f.title);
+        self.status(f.status);
+        self.state(f.state);
+        self.complete(f.complete);
+        self.comments([]);
+        $.each(f.comments, function(ck, cv) {
+          self.comments.unshift(
+            new Comment(cv.comment, cv.user, cv.created_at));
+        });
+      },
+      error: function(msg) {
+               console.log(msg.responseText);
+             }
+    });
+  }
 
   // Swimming
   this.canSwimForward = ko.dependentObservable(function() {
@@ -105,22 +114,8 @@ var Feature = function(id, title, status, state, complete) {
     }
   };
   this.swim = function(newstatus) {
-    var f = this;
-    $.ajax({
-      type: "POST",
-      url: '/feature/'+this.id+'/status',
-      data: { "status": newstatus },
-      dataType: 'json',
-      success: function(data) {
-        $.each(data, function(fk, fv) {
-          f.comments.unshift(new Comment(fv.comment, fv.user, fv.created_at));
-        });
-        f.status(newstatus);
-      },
-      error: function(msg) {
-               console.log(msg.responseText);
-             }
-    });
+    self.updateFeature('/feature/'+self.id+'/status', 
+        { "status": newstatus });
   };
   this.showDetails = function(e) {
     var elem = $(e.target); 
@@ -144,7 +139,6 @@ var viewModel = {
         data: { "feature": newFeature },
         dataType: 'json',
         success: function(feature) {
-          console.log(ko.toJS(feature));
           var f = new Feature(feature.id, feature.title, 
             feature.status, feature.state, feature.complete);
           var cm = feature.comments[0];
@@ -190,6 +184,7 @@ $(document).ajaxStart(function(){
 }).ajaxStop(function(){ 
   $('#dialog-progress').hide();
 });
+
 /*
 // Setup the ajax indicator
 $('body').append('<div id="ajaxBusy"><p><img src="/img/loading.gif"></p></div>');

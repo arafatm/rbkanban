@@ -65,7 +65,7 @@ post '/feature/:id/state' do
     c = f.comments << Comment.new(:user => session['user'],
                                   :comment => c)
     if f.save
-      return c.to_json
+      return f.to_json
     end
   end
   error 410, "yer moms mom" 
@@ -79,19 +79,18 @@ post '/feature/:id/status' do
     c = f.comments << Comment.new(:user => session['user'],
                                   :comment => c)
     if f.save
-      return c.to_json
+      return f.to_json
     end
   end
   error 410, "yer moms mom" 
 end
 
 put '/feature/:id/comment' do
-  
   f = Feature.find(params['id'])
   c = f.comments << Comment.new(:user => session['user'], 
                                 :comment => params['comment'])
   if f.save 
-      return c.to_json
+      return f.to_json
   else
     error 410, "yer mom"
   end
