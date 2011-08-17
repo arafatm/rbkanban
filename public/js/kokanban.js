@@ -48,22 +48,6 @@ var Feature = function(id, title, status, state, complete) {
              }
     });
   };
-  self.complete.edit = ko.dependentObservable({
-    read: self.complete,
-    write: function(completion) {
-      $.ajax({
-        type: "POST",
-        url: '/feature/'+self.id+'/complete',
-        dataType: 'json',
-        success: function(data) {
-          console.log(ko.toJS(viewModel));
-        },
-        error: function(msg) {
-                 console.log(msg.responseText);
-               }
-      });
-    }
-  });
   self.comments = ko.observableArray([]);
 
   self.addComment = function(form) {
