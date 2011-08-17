@@ -38,6 +38,7 @@ var Feature = function(id, title, status, state, complete) {
    */
   self.addComment = function(form) {
     var newComment;
+    console.log("Adding Comment");
     if (form['newComment'].value.length > 0){
       newComment = form['newComment'].value;
       var f = self;
@@ -48,6 +49,7 @@ var Feature = function(id, title, status, state, complete) {
         data: { "comment": newComment },
         dataType: 'json',
         success: function(f) {
+          console.log(ko.toJS(f));
           self.title(f.title);
           self.status(f.status);
           self.state(f.state);

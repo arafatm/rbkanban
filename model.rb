@@ -39,6 +39,37 @@ class Feature
       return "Error creating Feature"
     end
   end
+  def self.changestate(user, id, state)
+    f = Feature.find(id)
+    if f.class == Feature
+      c = "Updating state from #{f.state} to #{state}"
+      f.comments << Comment.new(:user => user, :comment => c)
+      f.state = state
+      if f.save
+        return f
+      else
+        return "Error updating state"
+      end
+    else
+      return "Could not find Feature"
+    end
+  end
+  def self.swim(user, id, status)
+    f = Feature.find(id)
+    if f.class == Feature
+      c = "Updating status from #{f.status} to #{status}"
+      f.comments << Comment.new(:user => user, :comment => c)
+      f.status = status
+      f.state = "Ready"
+      if f.save
+        return f
+      else
+        return "Error updating status"
+      end
+    else
+      return "Could not find Feature"
+    end
+  end
   def self.complete(user, id)
     f = Feature.find(id)
     if f.class == Feature
@@ -54,7 +85,19 @@ class Feature
       return "Could not find Feature"
     end
   end
-
+  def self.comment(user, id, comment)
+    f = Feature.find(id)
+    if f.class == Feature
+      f.comments << Comment.new(:user => user, :comment => comment)
+      if f.save
+        return f
+      else
+        return "Error adding comment"
+      end
+    else
+      return "Could not find Feature"
+    end
+  end
 end
 
 class Comment

@@ -48,60 +48,30 @@ get '/features/working' do
 end
 
 put '/feature' do
-  f = Feature.create(session['user'], params["feature"])
-  if f.class == Feature
-    return f.to_json
-  else
-    error 410, f
-  end
+  respond Feature.create(session['user'], params["feature"])
 end
 
 
 post '/feature/:id/state' do
-  f = Feature.find(params['id'])
-  if f
-    c = "Changing state from " + f.state + " to " + params['state']
-    f.state = params['state']
-    c = f.comments << Comment.new(:user => session['user'],
-                                  :comment => c)
-    if f.save
-      return f.to_json
-    end
-  end
-  error 410, "yer moms mom" 
+  respond Feature.changestate(session['user'],params['id'],params['state'])
 end
 
 post '/feature/:id/status' do
-  f = Feature.find(params['id'])
-  if f
-    c = "Changing status from " + f.status + " to " + params['status']
-    f.status = params['status']
-    c = f.comments << Comment.new(:user => session['user'],
-                                  :comment => c)
-    if f.save
-      return f.to_json
-    end
-  end
-  error 410, "yer moms mom" 
+  respond Feature.swim(session['user'], params['id'], params['status'])
 end
 
 put '/feature/:id/comment' do
-  f = Feature.find(params['id'])
-  c = f.comments << Comment.new(:user => session['user'], 
-                                :comment => params['comment'])
-  if f.save 
-      return f.to_json
-  else
-    error 410, "yer mom"
-  end
+  respond Feature.comment(session['user'], params['id'], params['comment'])
 end
 
 post '/feature/:id/complete' do
-  f = Feature.complete(session['user'], params['id'])
-  puts f.to_json
-  if f.class == Feature
-    return f.to_json
+  respond Feature.complete(session['user'], params['id'])
+end
+
+def respond(feature)
+  if feature.class == Feature
+    return feature.to_json
   else
-    error 410, f
+    error 410, feature
   end
 end
