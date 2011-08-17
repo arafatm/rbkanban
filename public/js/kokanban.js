@@ -195,3 +195,31 @@ viewModel.findFeatureByTitle = function(searchtitle) {
   });
 };
 ko.applyBindings(viewModel);
+
+$(function() {
+  // Ajax activity indicator bound to ajax start/stop document events
+  $(document).ajaxStart(function(){ 
+    $('#dialog-progress').show(); 
+  }).ajaxStop(function(){ 
+    $('#dialog-progress').hide();
+  });
+});
+/*
+// Setup the ajax indicator
+$('body').append('<div id="ajaxBusy"><p><img src="/img/loading.gif"></p></div>');
+
+$('#ajaxBusy').css({
+  display:"none",
+  margin:"5em",
+  paddingLeft:"0px",
+  paddingRight:"0px",
+  paddingTop:"0px",
+  paddingBottom:"0px",
+  position:"absolute",
+  left:"5em",
+  top:"5em",
+  width:"auto"
+});
+
+
+*/

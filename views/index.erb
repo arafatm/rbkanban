@@ -3,12 +3,18 @@
 <link href='css/reset.css' type='text/css' rel='stylesheet'>
 <link href='css/layout.css' type='text/css' rel='stylesheet'>
 <link href='css/kokanban.css' type='text/css' rel='stylesheet'>
+<link href='css/smoothness/jquery-ui-1.8.14.custom.css' type='text/css' rel='stylesheet'>
 <script src="js/jquery-1.6.1.min.js" type="text/javascript"></script>
 <script src="js/jquery.tmpl.js" type="text/javascript"></script>
+<script src="js/jquery-ui.min.js" type="text/javascript"></script>
 <script src="js/jquery.timeago.js" type="text/javascript"></script>
 <script src="js/knockout-1.2.1.js" type="text/javascript"></script>
 </head>
 <body>
+<div id="dialog-progress">
+  <img id="dialog-progress" src="/img/loading.gif" />
+  test
+</div>
 <div id='header'>
   <div id='user'>Welcome <%= session['user'] %></div>
   <div id='logout'>
@@ -68,28 +74,29 @@
     <td>
       <h3>DONE</h3>
       <ul>
-        <li>Add 'new feature'</li>
-        <li>Swim feature between statuses</li>
-        <li>Click on feature to display comments</li>
-        <li>Change state of feature </li> 
-        <li>Changing state changes color of card</li>
-        <li>Add a comment</li>
-        <li>Changing status or state of feature inserts a comment</li>
-        <li>login</li>
-        <li>Displaying timestamps using http://timeago.yarp.com/</li>
-        <li>Mark 'who' made a change</li>
+        <li>8/17 ajax progress indicator</li>
         <li>8/16 Mark feature 'Done'</li>
+        <li>Mark 'who' made a change</li>
+        <li>Displaying timestamps using http://timeago.yarp.com/</li>
+        <li>login</li>
+        <li>Changing status or state of feature inserts a comment</li>
+        <li>Add a comment</li>
+        <li>Changing state changes color of card</li>
+        <li>Change state of feature </li> 
+        <li>Click on feature to display comments</li>
+        <li>Swim feature between statuses</li>
+        <li>Add 'new feature'</li>
       </ul>
     </td><td>
       <h3>TODO</h3>
       <ul>
-        <li>Refactor Feature functions to emulate state.edit</li>
-        <li>ajax progress indicator</li>
-        <li>Assign points</li>
+        <li>Why is ajax dialog-progress not displaying on initial page load</li>
         <li>reset state to 'ready' when changing status</li>
+        <li>Assign points</li>
+        <li>Refactor Feature functions to emulate state.edit</li>
+        <li>Seperate 'backlog' vs 'in progress' boards</li>
         <li>Authentication (google?)</li>
         <li>Display cycle time</li>
-        <li>Seperate 'backlog' vs 'in progress' boards</li>
         <li>Tests</li>
         <li>Push server (websockets, nowjs, ?)</li>
         <li>Sort features</li>
