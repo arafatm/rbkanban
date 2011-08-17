@@ -98,6 +98,7 @@ end
 
 post '/feature/:id/complete' do
   f = Feature.complete(session['user'], params['id'])
+  puts f.to_json
   if f.class == Feature
     return f.to_json
   else

@@ -23,11 +23,12 @@ var Feature = function(id, title, status, state, complete) {
   });
   self.complete = ko.observable(complete);
   self.completion = function() {
-    self.updateFeature('/feature/'+self.id+'/complete');
-    console.log("Updated complete = "+self.complete);
-    if (self.complete == true) {
-      viewModel.features.remove(self);
-    }
+    self.updateFeature('/feature/'+self.id+'/complete', {},
+        function() {
+          if (self.complete() == true) {
+            viewModel.features.remove(self);
+          }
+        });
   };
   self.comments = ko.observableArray([]);
 
@@ -46,10 +47,15 @@ var Feature = function(id, title, status, state, complete) {
         url: '/feature/'+self.id+'/comment',
         data: { "comment": newComment },
         dataType: 'json',
-        success: function(data) {
-          console.log(data);
-          $.each(data, function(fk, fv) {
-            f.comments.unshift(new Comment(fv.comment, fv.user, fv.created_at));
+        success: function(f) {
+          self.title(f.title);
+          self.status(f.status);
+          self.state(f.state);
+          self.complete(f.complete);
+          self.comments([]);
+          $.each(f.comments, function(ck, cv) {
+            self.comments.unshift(
+              new Comment(cv.comment, cv.user, cv.created_at));
           });
           form['newComment'].value = '';
         },
@@ -60,7 +66,7 @@ var Feature = function(id, title, status, state, complete) {
     }
   };
 
-  self.updateFeature = function(url, data) {
+  self.updateFeature = function(url, data, callback) {
     $.ajax({
       type: "POST",
       url: url,
@@ -76,6 +82,7 @@ var Feature = function(id, title, status, state, complete) {
           self.comments.unshift(
             new Comment(cv.comment, cv.user, cv.created_at));
         });
+        typeof callback === 'function' && callback();
       },
       error: function(msg) {
                console.log(msg.responseText);
