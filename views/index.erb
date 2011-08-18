@@ -46,12 +46,11 @@
 
 <script id="features" type="text/html">
 <div data-bind="attr:{ 'class': state }">
-    <span class="points" data-bind="text: points" />
     <a class="showComment" data-bind="text: title, click: function(e) { showDetails(e) }" />
   <div class="details" data-bind="visible: false">
-    <input class="points" data-bind="value: points.edit" />
+    <select data-bind="options: pointss, value: points.edit" />
     <select data-bind="options: states, value: state.edit" />
-    <a class="clear complete" data-bind="click: completion">Complete</a> 
+    <a class="complete" data-bind="click: completion">Complete</a> 
     <form data-bind="submit: addComment">
       <input id="newComment" class='newComment' />
     </form>

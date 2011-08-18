@@ -31,7 +31,8 @@ class Feature
     f = Feature.new(:title => title, 
                     :status => "Backlog",
                     :state => "Ready",
-                    :complete => false)
+                    :complete => false,
+                    :points => 0)
     f.comments << Comment.new(:user => user,
                               :comment => "Created Feature")
     if f.save

@@ -1,5 +1,6 @@
 var statuses = [ "Backlog", "Analysis", "Dev", "Verify", "Release" ];
 var states = [ "Ready", "Progress", "Impeded" ];
+var pointss = ["0", "1", "2", "3", "5", "8", "13"]
 
 var Comment = function(comment, user, created_at) {
   this.comment = comment;
@@ -13,20 +14,22 @@ var Feature = function(id, title, status, state, complete, points) {
   self.id = id;
   self.title = ko.observable(title);
   self.status = ko.observable(status);
-  self.state = ko.observable(state);
   self.points = ko.observable(points);
   self.points.edit = ko.dependentObservable({
     read: self.points,
     write: function(newpoints) {
-      self.updateFeature('/feature/'+self.id+'/points',
-        { "points": newpoints });
+        console.log("updating points from "+self.points()+"to "+newpoints);
+        self.updateFeature('/feature/'+self.id+'/points',
+          { "points": newpoints });
     }
   });
+  self.state = ko.observable(state);
   self.state.edit = ko.dependentObservable({
     read: self.state,
     write: function(newstate) {
-      self.updateFeature('/feature/'+self.id+'/state',
-        { "state": newstate });
+        console.log("updating state");
+        self.updateFeature('/feature/'+self.id+'/state',
+          { "state": newstate });
     }
   });
   self.complete = ko.observable(complete);
@@ -56,6 +59,7 @@ var Feature = function(id, title, status, state, complete, points) {
         data: { "comment": newComment },
         dataType: 'json',
         success: function(f) {
+          console.log(url +": "+data);
           self.title(f.title);
           self.status(f.status);
           self.state(f.state);
@@ -81,6 +85,7 @@ var Feature = function(id, title, status, state, complete, points) {
       data: data,
       dataType: 'json',
       success: function(f) {
+        console.log(url+": "+ko.toJSON(data));
         self.title(f.title);
         self.status(f.status);
         self.state(f.state);
@@ -155,6 +160,7 @@ var viewModel = {
         data: { "feature": newFeature },
         dataType: 'json',
         success: function(feature) {
+          console.log(url);
           var f = new Feature(feature.id, feature.title, feature.status,
             feature.state, feature.complete, feature.points);
           var cm = feature.comments[0];
@@ -199,6 +205,7 @@ $(document).ajaxStart(function(){
   $('#dialog-progress').show(); 
 }).ajaxStop(function(){ 
   $('#dialog-progress').hide();
+  $(".details").hide();
 });
 
 /*
