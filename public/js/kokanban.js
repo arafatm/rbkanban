@@ -1,6 +1,6 @@
 var statuses = [ "Backlog", "Analysis", "Dev", "Verify", "Release" ];
 var states = [ "Ready", "Progress", "Impeded" ];
-var pointss = [0, 1, 2, 3, 5, 8, 13]
+var pointss = ["0", "1", "2", "3", "5", "8", "13"]
 
 var Comment = function(comment, user, created_at) {
   this.comment = comment;
@@ -18,7 +18,7 @@ var Feature = function(id, title, status, state, complete, points) {
   self.state = ko.observable(state);
   self.complete = ko.observable(complete);
   self.points.edit = ko.dependentObservable({
-    read: function() { return self.points(); },
+    read: function() { return String(self.points()); },
     write: function(newpoints) {
       debug("points.edit " + self.id);
       if (newpoints != self.points()) {

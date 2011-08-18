@@ -46,7 +46,8 @@
 
 <script id="features" type="text/html">
 <div data-bind="attr:{ 'class': state }">
-    <a class="showComment" data-bind="text: title, click: function(e) { showDetails(e) }" />
+  <span class="points" data-bind="text: points" />
+  <a class="showComment" data-bind="text: title, click: function(e) { showDetails(e) }" />
   <div class="details" data-bind="visible: false">
     <select data-bind="options: pointss, value: points.edit" />
     <select data-bind="options: states, value: state.edit" />
