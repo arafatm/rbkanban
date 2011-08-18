@@ -140,6 +140,7 @@ var Feature = function(id, title, status, state, complete, points) {
   };
   self.showDetails = function(e) {
     var elem = $(e.target); 
+    elem.siblings('.lastcomment').toggle();
     var show = !elem.siblings('.details').is(":visible")
       $(".details").hide();
     if(show)  {
@@ -208,6 +209,7 @@ $(document).ajaxStart(function(){
 }).ajaxStop(function(){ 
   $('#dialog-progress').hide();
   $(".details").hide();
+  $(".lastcomment").show();
 });
 
 var debug = function(arg) {
