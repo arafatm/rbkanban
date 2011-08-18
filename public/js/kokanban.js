@@ -20,9 +20,7 @@ var Feature = function(id, title, status, state, complete, points) {
   self.points.edit = ko.dependentObservable({
     read: function() { return String(self.points()); },
     write: function(newpoints) {
-      debug("points.edit " + self.id);
       if (newpoints != self.points()) {
-        debug(self.id+": points: "+typeof self.points()+" new: "+typeof newpoints);
         //debug(typeof self.points());
         //debug(typeof newpoints);
         self.updateFeature({url: '/feature/'+self.id+'/points',
@@ -47,6 +45,15 @@ var Feature = function(id, title, status, state, complete, points) {
         }});
   };
   self.comments = ko.observableArray([]);
+  self.lastcomment = ko.dependentObservable({
+    read: function() {
+            if (self.comments().length > 0) {
+              var comment = self.comments()[0];
+              //debug(comment);
+              return comment.comment;
+            }
+          }
+  });
 
   /* TODO:
    * Refactor to not care data is coming from a form
@@ -133,10 +140,11 @@ var Feature = function(id, title, status, state, complete, points) {
   };
   self.showDetails = function(e) {
     var elem = $(e.target); 
-    var show = !elem.next().is(":visible")
+    var show = !elem.siblings('.details').is(":visible")
       $(".details").hide();
-    if(show) 
-      elem.next().toggle();
+    if(show)  {
+      elem.siblings('.details').toggle();
+    }
   };
 };
 

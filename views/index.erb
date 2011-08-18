@@ -48,6 +48,7 @@
 <div data-bind="attr:{ 'class': state }">
   <span class="points" data-bind="text: points" />
   <a href="#" class="showComment" data-bind="text: title, click: function(e) { showDetails(e) }" />
+  <div id="lastcomment" class="lastcomment" data-bind="text: lastcomment" />
   <div class="details" data-bind="visible: false">
     <form data-bind="submit: addComment">
       <textarea id="newComment" class='newComment' />
