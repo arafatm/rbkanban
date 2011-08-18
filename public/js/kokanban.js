@@ -1,6 +1,6 @@
 var statuses = [ "Backlog", "Analysis", "Dev", "Verify", "Release" ];
 var states = [ "Ready", "Progress", "Impeded" ];
-var pointss = ["0", "1", "2", "3", "5", "8", "13"]
+var pointss = [0, 1, 2, 3, 5, 8, 13]
 
 var Comment = function(comment, user, created_at) {
   this.comment = comment;
@@ -15,31 +15,36 @@ var Feature = function(id, title, status, state, complete, points) {
   self.title = ko.observable(title);
   self.status = ko.observable(status);
   self.points = ko.observable(points);
+  self.state = ko.observable(state);
+  self.complete = ko.observable(complete);
   self.points.edit = ko.dependentObservable({
-    read: self.points,
+    read: function() { return self.points(); },
     write: function(newpoints) {
-        console.log("updating points from "+self.points()+"to "+newpoints);
-        self.updateFeature('/feature/'+self.id+'/points',
-          { "points": newpoints });
+      debug("points.edit " + self.id);
+      if (newpoints != self.points()) {
+        debug(self.id+": points: "+typeof self.points()+" new: "+typeof newpoints);
+        //debug(typeof self.points());
+        //debug(typeof newpoints);
+        self.updateFeature({url: '/feature/'+self.id+'/points',
+          data: { "points": newpoints }});
+      }
     }
   });
-  self.state = ko.observable(state);
   self.state.edit = ko.dependentObservable({
     read: self.state,
     write: function(newstate) {
-        console.log("updating state");
-        self.updateFeature('/feature/'+self.id+'/state',
-          { "state": newstate });
+        //debug("updating state");
+        self.updateFeature({url: '/feature/'+self.id+'/state',
+          data: { "state": newstate }});
     }
   });
-  self.complete = ko.observable(complete);
   self.completion = function() {
-    self.updateFeature('/feature/'+self.id+'/complete', {},
-        function() {
+    self.updateFeature({url: '/feature/'+self.id+'/complete', 
+      callback: function() {
           if (self.complete() == true) {
             viewModel.features.remove(self);
           }
-        });
+        }});
   };
   self.comments = ko.observableArray([]);
 
@@ -53,50 +58,38 @@ var Feature = function(id, title, status, state, complete, points) {
       newComment = form['newComment'].value;
       var f = self;
 
-      $.ajax({
+      self.updateFeature({
         type: "PUT",
         url: '/feature/'+self.id+'/comment',
         data: { "comment": newComment },
-        dataType: 'json',
-        success: function(f) {
-          console.log(url +": "+data);
-          self.title(f.title);
-          self.status(f.status);
-          self.state(f.state);
-          self.complete(f.complete);
-          self.comments([]);
-          $.each(f.comments, function(ck, cv) {
-            self.comments.unshift(
-              new Comment(cv.comment, cv.user, cv.created_at));
-          });
+        callback: function() {
           form['newComment'].value = '';
-        },
-        error: function(msg) {
-                 console.log( msg.responseText );
-               }
+        }
       });
     }
   };
 
-  self.updateFeature = function(url, data, callback) {
+  self.updateFeature = function(args) {
+    //debug(args);
+    debug(args['url']+": "+ko.toJSON(args['data']));
     $.ajax({
-      type: "POST",
-      url: url,
-      data: data,
+      type: args['type'] || "POST",
+      url: args['url'],
+      data: args['data'],
       dataType: 'json',
       success: function(f) {
-        console.log(url+": "+ko.toJSON(data));
         self.title(f.title);
         self.status(f.status);
         self.state(f.state);
         self.complete(f.complete);
         self.points(f.points);
+        //debug(self.id+": points: "+typeof self.points()+" new: "+typeof f.points);
         self.comments([]);
         $.each(f.comments, function(ck, cv) {
           self.comments.unshift(
             new Comment(cv.comment, cv.user, cv.created_at));
         });
-        typeof callback === 'function' && callback();
+        typeof args['callback'] === 'function' && args['callback']();
       },
       error: function(msg) {
                console.log(msg.responseText);
@@ -105,40 +98,40 @@ var Feature = function(id, title, status, state, complete, points) {
   }
 
   // Swimming
-  this.canSwimForward = ko.dependentObservable(function() {
-    if (this.status() != statuses[statuses.length - 1]) {
+  self.canSwimForward = ko.dependentObservable(function() {
+    if (self.status() != statuses[statuses.length - 1]) {
       return true;
     }
     return false;
-  }, this);
-  this.canSwimBackward = ko.dependentObservable(function() {
-    if (this.status() != statuses[0]) {
+  });
+  self.canSwimBackward = ko.dependentObservable(function() {
+    if (self.status() != statuses[0]) {
       return true;
     }
     return false;
-  }, this);
-  this.swimBackward = function(e) {
+  });
+  self.swimBackward = function(e) {
     var elem = $(e.target);
     for(var i = 1; i < statuses.length; i++) {
-      if (this.status() == statuses[i]) {
-        this.swim(statuses[i-1]);
+      if (self.status() == statuses[i]) {
+        self.swim(statuses[i-1]);
         break;
       }
     }
   };
-  this.swimForward = function() {
+  self.swimForward = function() {
     for(var i = 0; i < (statuses.length-1); i++) {
-      if (this.status() == statuses[i]) {
-        this.swim(statuses[i+1]);
+      if (self.status() == statuses[i]) {
+        self.swim(statuses[i+1]);
         break;
       }
     }
   };
-  this.swim = function(newstatus) {
-    self.updateFeature('/feature/'+self.id+'/status', 
-        { "status": newstatus });
+  self.swim = function(newstatus) {
+    self.updateFeature({url: '/feature/'+self.id+'/status', 
+      data: { "status": newstatus }});
   };
-  this.showDetails = function(e) {
+  self.showDetails = function(e) {
     var elem = $(e.target); 
     var show = !elem.next().is(":visible")
       $(".details").hide();
@@ -150,6 +143,7 @@ var Feature = function(id, title, status, state, complete, points) {
 var viewModel = {
   statuses: ko.observableArray(statuses),
   states: ko.observableArray(states),
+  pointss: ko.observableArray(pointss),
   features: ko.observableArray([]),
   addFeature: function(form) {
     if (form['newFeature'].value.length > 0){
@@ -160,7 +154,7 @@ var viewModel = {
         data: { "feature": newFeature },
         dataType: 'json',
         success: function(feature) {
-          console.log(url);
+          //debug(url);
           var f = new Feature(feature.id, feature.title, feature.status,
             feature.state, feature.complete, feature.points);
           var cm = feature.comments[0];
@@ -208,22 +202,6 @@ $(document).ajaxStart(function(){
   $(".details").hide();
 });
 
-/*
-// Setup the ajax indicator
-$('body').append('<div id="ajaxBusy"><p><img src="/img/loading.gif"></p></div>');
-
-$('#ajaxBusy').css({
-  display:"none",
-  margin:"5em",
-  paddingLeft:"0px",
-  paddingRight:"0px",
-  paddingTop:"0px",
-  paddingBottom:"0px",
-  position:"absolute",
-  left:"5em",
-  top:"5em",
-  width:"auto"
-});
-
-
-*/
+var debug = function(arg) {
+  console.log(arg);
+}
