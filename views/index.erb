@@ -13,11 +13,10 @@
 <body>
 <div id="dialog-progress">
   <img id="dialog-progress" src="/img/loading.gif" />
-  test
 </div>
-<div id='header'>
-  <div id='user'>Welcome <%= session['user'] %></div>
-  <div id='logout'>
+<div class="container" id='header'>
+  <div class="left" id='user'>Welcome <%= session['user'] %></div>
+  <div class="right" id='logout'>
     <a href="/logout">Logout</a>
   </div>
 </div>
@@ -46,13 +45,13 @@
 </script>
 
 <script id="features" type="text/html">
-<div class='feature' data-bind="attr:{ 'class': state }">
-  <span data-bind="text: points" />
-  <a class="showComment" data-bind="text: title, click: function(e) { showDetails(e) }" />
+<div data-bind="attr:{ 'class': state }">
+    <span class="points" data-bind="text: points" />
+    <a class="showComment" data-bind="text: title, click: function(e) { showDetails(e) }" />
   <div class="details" data-bind="visible: false">
     <input class="points" data-bind="value: points.edit" />
     <select data-bind="options: states, value: state.edit" />
-    <a class="complete" data-bind="click: completion">Complete</a> 
+    <a class="clear complete" data-bind="click: completion">Complete</a> 
     <form data-bind="submit: addComment">
       <input id="newComment" class='newComment' />
     </form>

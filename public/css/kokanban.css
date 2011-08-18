@@ -48,7 +48,6 @@ div {
    border: 1px solid black;
    margin: 1em 0;
    padding: 5px;
-   background-color: #FFF8D7;
  }
  div.comment {
    margin-top: 5px;
@@ -56,6 +55,11 @@ div {
  }
  div.swim {
    text-align: center;
+ }
+ span.points {
+   font-weight: 900;
+   border: 1px solid black;
+   margin-right: .5em;
  }
  input.points {
    width: 3em;
@@ -69,9 +73,6 @@ div {
    color: blue;
    font-size: 120%;
    margin: 0em 1em;
- }
- a.showComment {
-   clear: both;
  }
  input.newComment {
    width: 100%;
@@ -90,17 +91,24 @@ div {
    margin-left: 1em;
    padding-left: 1em;
  }
+ .container::after {
+   content: ".";
+   display: block;
+   height: 0;
+   clear: both;
+   visibility: hidden;
+}
+.container .left {
+  float: left;
+}
+.container .right {
+  float: right;
+}
  /* HEADER */
  div#header {
    background-color: #03889C;
    color: #FFF;
    padding: 2em;
- }
- div#header div#user {
-   float: left;
- }
- div#header div#logout {
-   float: right;
  }
  div#header div#logout a {
    color: #FFF;
