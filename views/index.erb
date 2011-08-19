@@ -49,21 +49,20 @@
 <div data-bind="attr:{ 'class': state }">
   <span class="points" data-bind="text: points" />
   <a href="#" class="title" data-bind="text: title, click: function(e) { showDetails(e) }" />
-  <hr />
   <div class="lastcomment">
     <em data-bind="text: lastcomment().user" />
     <span data-bind="text: lastcomment().datestamp" /><br />
     <span data-bind="text: lastcomment().comment" />
   </div>
   <div class="details" data-bind="visible: false">
-    <form data-bind="submit: addComment">
-      <textarea id="newComment" class='newComment' />
-      <button class="newComment" type="submit">Add Comment</button>
-    </form>
     <div class="swim">
       <a href="#" data-bind="click: swimBackward, visible: canSwimBackward" class="swim"><--</a>
       <a href="#" data-bind="click: swimForward, visible: canSwimForward" class="swim">--></a>
     </div>
+    <form data-bind="submit: addComment">
+      <textarea id="newComment" class='newComment' />
+      <button class="newComment" type="submit">Add Comment</button>
+    </form>
     <select data-bind="options: pointss, value: points.edit" />
     <select data-bind="options: states, value: state.edit" />
     <a class="complete" data-bind="click: completion">Complete</a> 

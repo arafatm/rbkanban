@@ -13,7 +13,6 @@ a {
 div {
   font-family: Arial;
   font-size: 14px;
-  display: inline-block;
  }
 
  h2 {
@@ -77,10 +76,11 @@ div {
  div#newfeature {
    background-color: #00C322;
    color: #FFF;
+   padding: 5px 1em;
  }
  div#newfeature label {
-   width: 15%;
    text-align: right
+   padding-left: 3em;
  }
  div#newfeature input#newfeature {
    width: 85%;
@@ -107,20 +107,28 @@ div {
    margin: 0 0 1ex 0;
    padding: 1%;
  }
+ div.feature div.summary {
+   display: block;
+   margin-bottom: 1ex;
+ }
+ div.lastcomment {
+   border-top: 1px solid black;
+   margin-top: 1ex;
+   padding-top: 1ex;
+   width: 100%;
+ }
  div.comment {
    margin-top: 5px;
    border-bottom: 1px solid black;
  }
  div.swim {
+   display: block;
    text-align: center;
  }
  span.points {
    font-weight: 900;
    margin-right: .5em;
    text-decoration: underline;
- }
- a.title {
-   text-decoration: none;
  }
  a.complete {
    background-color: #F33;
