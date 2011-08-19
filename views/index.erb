@@ -47,8 +47,13 @@
 <script id="features" type="text/html">
 <div data-bind="attr:{ 'class': state }">
   <span class="points" data-bind="text: points" />
-  <a href="#" class="showComment" data-bind="text: title, click: function(e) { showDetails(e) }" />
-  <div id="lastcomment" class="lastcomment" data-bind="text: lastcomment" />
+  <a href="#" class="title" data-bind="text: title, click: function(e) { showDetails(e) }" />
+  <hr />
+  <div class="lastcomment">
+    <em data-bind="text: lastcomment().user" />
+    <span data-bind="text: lastcomment().datestamp" /><br />
+    <span data-bind="text: lastcomment().comment" />
+  </div>
   <div class="details" data-bind="visible: false">
     <form data-bind="submit: addComment">
       <textarea id="newComment" class='newComment' />

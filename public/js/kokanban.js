@@ -48,9 +48,12 @@ var Feature = function(id, title, status, state, complete, points) {
   self.lastcomment = ko.dependentObservable({
     read: function() {
             if (self.comments().length > 0) {
-              var comment = self.comments()[0];
-              //debug(comment);
-              return comment.comment;
+              debug(typeof self.comments()[0]);
+              return self.comments()[0];
+            }
+            else {
+              // data-bind really doesn't like nothing returned
+              return {user: '', datestamp: '', comment: ''}; 
             }
           }
   });
@@ -140,9 +143,9 @@ var Feature = function(id, title, status, state, complete, points) {
   };
   self.showDetails = function(e) {
     var elem = $(e.target); 
-    elem.siblings('.lastcomment').toggle();
     var show = !elem.siblings('.details').is(":visible")
-      $(".details").hide();
+    $(".details").hide();
+    elem.siblings('.lastcomment').toggle();
     if(show)  {
       elem.siblings('.details').toggle();
     }
@@ -208,8 +211,8 @@ $(document).ajaxStart(function(){
   $('#dialog-progress').show(); 
 }).ajaxStop(function(){ 
   $('#dialog-progress').hide();
-  $(".details").hide();
-  $(".lastcomment").show();
+  //$(".details").hide();
+  //$(".lastcomment").show();
 });
 
 var debug = function(arg) {
