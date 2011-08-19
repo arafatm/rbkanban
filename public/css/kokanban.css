@@ -20,7 +20,7 @@ div {
    font-size: 120%;
    font-weight: 900;;
    border-bottom: 1px solid black;
-   margin-bottom: 1em;
+   margin-bottom: 1ex;
    text-align: center;
  }
  table {
@@ -32,14 +32,13 @@ div {
  }
  table td {
    margin: 0;
-   padding: 10px;
+   padding: 0.5%;
    border: 1px solid black;
    width: 20%;
  }
  /* Structural Elements */
  div.container {
    display: block;
-   text-align: center;
    width: 100%;
  }
  div.right {
@@ -69,6 +68,7 @@ div {
    color: #FFF;
    padding: 1em 0em;
    margin: 0;
+   text-align: center;
  }
  div#header div#logout a {
    color: #FFF;
@@ -89,25 +89,23 @@ div {
  div.Impeded {
    background-color: #F00;
    border: 1px solid black;
-   margin: 1em 0;
-   padding: 5px;
  }
  div.Progress {
    background-color: #0F0;
    border: 1px solid black;
-   margin: 1em 0;
-   padding: 5px;
  }
  div.Ready {
    background-color: #FFF8D7;
    border: 1px solid black;
-   margin: 1em 0;
-   padding: 5px;
  }
- div.feature {
+ div.features {
+   display: block;
+ }
+ div.features>div {
+   width: 98%;
    border: 1px solid black;
-   margin: 1em 0;
-   padding: 5px;
+   margin: 0 0 1ex 0;
+   padding: 1%;
  }
  div.comment {
    margin-top: 5px;

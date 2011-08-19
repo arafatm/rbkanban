@@ -40,7 +40,7 @@
 <span data-bind="text: $data"></span>
 (<span data-bind="text: viewModel.filterByStatus()[$data].length"></span>)
 </h2>
-<div data-bind="template: { name: 'features', foreach: viewModel.filterByStatus()[$data], afterAdd:  function(elem) { $(elem).hide().fadeIn(2000) } }">
+<div class="container features" data-bind="template: { name: 'features', foreach: viewModel.filterByStatus()[$data], afterAdd:  function(elem) { $(elem).hide().fadeIn(2000) } }">
 </div>
 </td>
 </script>
