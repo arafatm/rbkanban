@@ -38,7 +38,6 @@ div {
  /* Structural Elements */
  div.container {
    display: block;
-   width: 100%;
  }
  div.right {
    float: right;
@@ -65,7 +64,7 @@ div {
  div#header {
    background-color: #03889C;
    color: #FFF;
-   padding: 1em 0em;
+   padding: 5px 1em;
    margin: 0;
    text-align: center;
  }
