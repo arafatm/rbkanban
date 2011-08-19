@@ -1,4 +1,9 @@
 /* Basic elements */
+body {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
 em {
   font-weight: 900;
 }
@@ -33,6 +38,7 @@ div {
  }
  /* Structural Elements */
  div.container {
+   display: block;
    text-align: center;
    width: 100%;
  }
@@ -61,11 +67,26 @@ div {
  div#header {
    background-color: #03889C;
    color: #FFF;
-   padding: 0.5em;
+   padding: 1em 0em;
+   margin: 0;
  }
  div#header div#logout a {
    color: #FFF;
  }
+ /* New Feature */
+ div#newfeature {
+   background-color: #00C322;
+   color: #FFF;
+   padding: 0.5em;
+ }
+ div#newfeature label {
+   width: 15%;
+   text-align: right
+ }
+ div#newfeature input#newfeature {
+   width: 85%;
+ }
+ /* Board */
  div.Impeded {
    background-color: #F00;
    border: 1px solid black;
@@ -133,19 +154,6 @@ div {
    list-style-type: disc;
    margin-left: 1em;
    padding-left: 1em;
- }
- /* New Feature */
- div#newfeature {
-   background-color: #00C322;
-   color: #FFF;
-   padding: 0.5em;
- }
- div#newfeature label {
-   width: 15%;
-   text-align: right
- }
- div#newfeature input#newfeature {
-   width: 85%;
  }
  /* Login */
  form#login {
