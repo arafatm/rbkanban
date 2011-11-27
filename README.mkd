@@ -3,3 +3,9 @@ Simple kanban board.
 Developed as a proof of concept using sinatra, mongo, and knockout.js
 
 Sample: http://rbkanban.heroku.com/
+
+# Mongo restart on Ubuntu
+sudo rm /var/lib/mongodb/mongod.lock
+sudo -u mongodb mongod -f /etc/mongodb.conf --repair
+sudo start mongodb
+sudo status mongodb

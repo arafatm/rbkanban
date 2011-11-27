@@ -4,11 +4,6 @@ require 'json'
 
 load './model.rb'
 
-class Feature 
-  include MongoMapper::Document
-  key :title, String
-end
-
 enable :sessions
 
 before do

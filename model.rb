@@ -10,7 +10,7 @@ if ENV['RACK_ENV'] == 'production'
 else
   MongoMapper.connection = Mongo::Connection.new('localhost')
   MongoMapper.database = 'rbkanban'
-  MongoMapper.database.authenticate('rbkanban', 'rbkanban')
+  #MongoMapper.database.authenticate('rbkanban', 'rbkanban')
 end
 
 class Feature 
