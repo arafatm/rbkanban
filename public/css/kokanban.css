@@ -3,6 +3,9 @@ body {
   width: 100%;
   margin: 0;
   padding: 0;
+  background-color: #0D0D0D;
+  color: #FBFBFB;
+  font-family: "Trebuchet MS", Arial, Helvetica, "Sans Serif"; 
 }
 em {
   font-weight: 900;
@@ -11,7 +14,7 @@ a {
   text-decoration: none;
 }
 div {
-  font-family: Arial;
+  font-family: "Trebuchet MS", Arial, Helvetica, "Sans Serif"; 
   font-size: 14px;
  }
 
@@ -26,8 +29,8 @@ div {
    border-collapse: collapse;
    width: 100%;
    margin: 0em;
-   background-color: #5FC0CE;
-   color: #000;
+   background-color: #0D0D0D;
+   color: #FBFBFB;
  }
  table td {
    margin: 0;
@@ -62,20 +65,20 @@ div {
  }
  /* HEADER */
  div#header {
-   background-color: #03889C;
-   color: #FFF;
+   background-color: #0D0D0D;
+   color: #FBFBFB;
    padding: 5px 1em;
    margin: 0;
    text-align: center;
  }
  div#header div#logout a {
-   color: #FFF;
+   color: #FBFBFB;
  }
  /* New Feature */
  div#newfeature {
-   background-color: #00C322;
-   color: #FFF;
-   padding: 5px 1em;
+   background-color: #B51B03;
+   color: #FBFBFB;
+   padding: .5em 2em;
  }
  div#newfeature label {
    text-align: right
@@ -85,26 +88,25 @@ div {
    width: 85%;
  }
  /* Board */
+ a.title {
+   color: #FBFBFB;
+ }
  div.Impeded {
-   background-color: #F00;
-   border: 1px solid black;
+   border-left: 1em solid #B51B03;
  }
  div.Progress {
-   background-color: #0F0;
-   border: 1px solid black;
+   border-left: 1em solid #84A534;
  }
  div.Ready {
-   background-color: #FFF8D7;
-   border: 1px solid black;
+   border-left: 1em solid #0390A4;
  }
  div.features {
    display: block;
  }
  div.features>div {
-   width: 98%;
-   border: 1px solid black;
-   margin: 0 0 1ex 0;
+   margin: 0em 0em 1em 0em;
    padding: 1%;
+   background-color: #323232;
  }
  div.feature div.summary {
    display: block;
@@ -130,7 +132,7 @@ div {
    text-decoration: underline;
  }
  a.complete {
-   background-color: #F33;
+   background-color: #0D0D0D;
    border: 1px solid black;
  }
  a.swim {
@@ -146,8 +148,14 @@ div {
    width: 100%;
  }
  /* README */
- table#readme {
-   background-color: white;
+ div#readme {
+   background-color: #B51B03;
+   color: #FBFBFB;
+   padding: 1em;
+   font-weight: 900;
+ }
+ div#readme a {
+   color: #FBFBFB;
  }
  table#readme h3 {
    margin: 1em;
