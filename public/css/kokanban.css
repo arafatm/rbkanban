@@ -125,6 +125,14 @@ div {
  div.swim {
    display: block;
    text-align: center;
+   margin: 0em;
+   padding: 0em;
+ }
+ div.swim a.swim {
+   margin: 0em 1em;
+   color: #FBFBFB;
+   font-weight: 900;
+   font-size: 200%;
  }
  span.points {
    font-weight: 900;
@@ -134,11 +142,6 @@ div {
  a.complete {
    background-color: #0D0D0D;
    border: 1px solid black;
- }
- a.swim {
-   color: blue;
-   font-size: 120%;
-   margin: 0em 1em;
  }
  textarea.newComment {
    width: 100%;
